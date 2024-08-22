@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=63300&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Super-Resolution for medical imaging | My New Hugo Site</title>
 <meta name="keywords" content="">
 <meta name="description" content="This repository contains code, data, and utilities for performing super-resolution on MRI images, specifically focused on improving the resolution from 1.5T to 3T MRI scans. The project leverages diffusion models and other machine learning techniques.
 Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs.">
 <meta name="author" content="">
-<link rel="canonical" href="https://chichonnade.github.io/posts/mri-super-resolution/">
+<link rel="canonical" href="http://localhost:63300/posts/mri-super-resolution/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://chichonnade.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://chichonnade.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://chichonnade.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://chichonnade.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://chichonnade.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:63300/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:63300/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:63300/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:63300/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:63300/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://chichonnade.github.io/posts/mri-super-resolution/">
+<link rel="alternate" hreflang="en" href="http://localhost:63300/posts/mri-super-resolution/">
 <noscript>
     <style>
         #theme-toggle,
@@ -57,71 +57,6 @@ Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion mod
 
     </style>
 </noscript>
-  
-
-<meta property="og:title" content="Super-Resolution for medical imaging" />
-<meta property="og:description" content="This repository contains code, data, and utilities for performing super-resolution on MRI images, specifically focused on improving the resolution from 1.5T to 3T MRI scans. The project leverages diffusion models and other machine learning techniques.
-Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://chichonnade.github.io/posts/mri-super-resolution/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-08-21T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-08-21T00:00:00+00:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Super-Resolution for medical imaging"/>
-<meta name="twitter:description" content="This repository contains code, data, and utilities for performing super-resolution on MRI images, specifically focused on improving the resolution from 1.5T to 3T MRI scans. The project leverages diffusion models and other machine learning techniques.
-Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://chichonnade.github.io/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Super-Resolution for medical imaging",
-      "item": "https://chichonnade.github.io/posts/mri-super-resolution/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Super-Resolution for medical imaging",
-  "name": "Super-Resolution for medical imaging",
-  "description": "This repository contains code, data, and utilities for performing super-resolution on MRI images, specifically focused on improving the resolution from 1.5T to 3T MRI scans. The project leverages diffusion models and other machine learning techniques.\nDemo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs.",
-  "keywords": [
-    
-  ],
-  "articleBody": " This repository contains code, data, and utilities for performing super-resolution on MRI images, specifically focused on improving the resolution from 1.5T to 3T MRI scans. The project leverages diffusion models and other machine learning techniques.\nDemo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs. Using a cascade of these models, we can achieve significant improvements in image quality.\nForward noise process Using a cosine noise schedule, we can gradually add noise to the input image, allowing the model to learn the noise distribution and generate high-resolution images. The noise variance is increased over 1000 steps with a maximum variance of 0.3 at the final step to prevent adding out-of-bound noise values.\nHere are the formulas used:\nCosine Schedule for Alphas: $$ \\alpha_t = \\cos^2\\left(\\frac{\\pi t}{2T}\\right) $$\nCumulative Product of Alphas: $$\\bar{\\alpha_{t}} = \\prod_{i=1}^{t}\\alpha_i$$\nForward Noise Process: $$ q(x_t | x_0) = \\mathcal{N}(x_t; \\sqrt{\\bar{\\alpha}_t} x_0, 0.3(1 - \\bar{\\alpha}_t) I) $$\nWhere:\n\\( \\alpha_t \\) represents the amount of signal retained at time step \\( t \\). \\( \\bar{\\alpha}_t \\) is the cumulative product of the alpha values up to time step \\( t \\). \\( x_t \\) is the noisy image at step \\( t \\). \\( x_0 \\) is the original image. \\( q(x_t \\mid x_0) \\) represents the probability distribution of the noisy image given the original image. LR/HR pairs We use the Human Connectome Project (HCP) dataset, which contains both 1.5T and 3T MRI scans. The LR images are generated by downsampling the HR images using the spline interpolation method. Then we train the diffusion model on these LR/HR pairs to learn the noise distribution and generate high-resolution images.\nDiffusion model with 3D convolutions Our model is based on the original DDPM architecture with 3D convolutions to handle the 3D MRI data. The model consists of a series of diffusion steps, each with a series of 3D convolutions, normalization layers, and a reversible block.\nContents of the Repository Project Structure Installation Usage Data Sample Data Utilities License Project Structure assets/: Contains auxiliary files, such as videos or images used in the project.\nmri_slices_combined-ezgif.com-video-to-gif-converter.avi: A video file likely showing combined MRI slices. data/: Contains the datasets used in the project.\nBrats2020/: Dataset related to the BraTS 2020 competition, focusing on brain tumor segmentation. HCP/: Dataset from the Human Connectome Project (HCP), used for MRI data. MNIST/: Contains the MNIST dataset, possibly used for experimentation or model testing. sample_data/: Contains sample data for testing or demo purposes.\nStructural Preprocessed for 7T (1.6mm/59k mesh): Preprocessed structural data intended for use with 7T MRI resolution. 100610_3T_Structural_1.6mm_preproc.zip: A ZIP file containing the preprocessed data for 3T MRI. 100610_3T_Structural_1.6mm_preproc.zip.md5: MD5 checksum for the ZIP file to verify its integrity. utils/: Utility scripts and notebooks for the project.\nDDPM.ipynb: A Jupyter notebook for training or experimenting with the DDPM model. diffusion_model_mnist.pth: A pre-trained diffusion model on the MNIST dataset. eda_notebook.ipynb: An exploratory data analysis (EDA) notebook. me.jpg: An image file, possibly a personal photo or a sample image for testing. mri_slices_combined.avi: Another video file, likely related to MRI data visualization. plot_t1w.py: A Python script for plotting T1-weighted MRI images. venv/: Virtual environment for managing project dependencies.\nInstallation To set up the environment for this project:\nClone the repository: ```bash git clone https://github.com/your-username/MRI-Super-Resolution.git ``` Navigate to the project directory: ```bash cd MRI-Super-Resolution ``` Create a virtual environment: ```bash python3 -m venv venv ``` Activate the virtual environment: ```bash source venv/bin/activate # On Windows: venv\\Scripts\u0007ctivate ``` Install the required packages: ```bash pip install -r requirements.txt ``` Usage Instructions on how to run the notebooks, train models, and process the MRI data:\nTraining the Model: Open DDPM.ipynb in Jupyter Notebook and run the cells to start training the diffusion model.\nExploratory Data Analysis: Use eda_notebook.ipynb to explore the dataset before training.\nVisualization: Run plot_t1w.py to generate visualizations of T1-weighted MRI images.\nData Brats2020: Use for brain tumor segmentation tasks. HCP: Contains MRI data from the Human Connectome Project. MNIST: Can be used for model testing or as an additional dataset for experiments. Sample Data Sample data under sample_data/Structural Preprocessed for 7T is provided to test the pipeline without downloading full datasets.\nUtilities Scripts and notebooks: Utility files provided in the utils/ directory to assist with model training, data exploration, and visualization. License This project is licensed under the MIT License - see the LICENSE file for details.\n",
-  "wordCount" : "768",
-  "inLanguage": "en",
-  "datePublished": "2024-08-21T00:00:00Z",
-  "dateModified": "2024-08-21T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://chichonnade.github.io/posts/mri-super-resolution/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "My New Hugo Site",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://chichonnade.github.io/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 
 <body class="" id="top">
@@ -139,7 +74,7 @@ Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion mod
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://chichonnade.github.io/" accesskey="h" title="My New Hugo Site (Alt + H)">My New Hugo Site</a>
+            <a href="http://localhost:63300/" accesskey="h" title="My New Hugo Site (Alt + H)">My New Hugo Site</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -341,7 +276,7 @@ Run <code>plot_t1w.py</code> to generate visualizations of T1-weighted MRI image
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="https://chichonnade.github.io/">My New Hugo Site</a></span> · 
+        <span>&copy; 2024 <a href="http://localhost:63300/">My New Hugo Site</a></span> · 
 
     <span>
         Powered by
