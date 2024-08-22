@@ -1,4 +1,3 @@
-
 ---
 title: "Super-Resolution for medical imaging"
 date: 2024-08-21
