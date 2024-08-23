@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Hendrik&#39;s Portfolio</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://chichonnade.github.io/posts/</link>
     <description>Recent content in Posts on Hendrik&#39;s Portfolio</description>
     <generator>Hugo -- 0.133.0</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 21 Aug 2024 12:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://chichonnade.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Radar object labelling for autonomous driving</title>
-      <link>http://localhost:1313/posts/radar-object-labelling-for-autonomous-driving/</link>
+      <link>https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/</link>
       <pubDate>Wed, 21 Aug 2024 12:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/radar-object-labelling-for-autonomous-driving/</guid>
+      <guid>https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/</guid>
       <description></description>
     </item>
     <item>
       <title>Super-Resolution for medical imaging</title>
-      <link>http://localhost:1313/posts/mri-super-resolution/</link>
+      <link>https://chichonnade.github.io/posts/mri-super-resolution/</link>
       <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/mri-super-resolution/</guid>
+      <guid>https://chichonnade.github.io/posts/mri-super-resolution/</guid>
       <description>Leveraging diffusion models for super-resolution tasks in MRI.
 Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs. Using a cascade of these models, we can achieve significant improvements in image quality.</description>
     </item>
