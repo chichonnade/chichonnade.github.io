@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=63300&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Super-Resolution for medical imaging | My New Hugo Site</title>
+<title>Super-Resolution for medical imaging | Hendrik&#39;s Portfolio</title>
 <meta name="keywords" content="">
-<meta name="description" content="This repository contains code, data, and utilities for performing super-resolution on MRI images, specifically focused on improving the resolution from 1.5T to 3T MRI scans. The project leverages diffusion models and other machine learning techniques.
-Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs.">
+<meta name="description" content="Leveraging diffusion models for super-resolution tasks in MRI.
+Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs. Using a cascade of these models, we can achieve significant improvements in image quality.">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:63300/posts/mri-super-resolution/">
+<link rel="canonical" href="http://localhost:1313/posts/mri-super-resolution/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:63300/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:63300/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:63300/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:63300/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:63300/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:63300/posts/mri-super-resolution/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/mri-super-resolution/">
 <noscript>
     <style>
         #theme-toggle,
@@ -74,7 +75,7 @@ Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion mod
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:63300/" accesskey="h" title="My New Hugo Site (Alt + H)">My New Hugo Site</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Hendrik&#39;s Portfolio (Alt + H)">Hendrik&#39;s Portfolio</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -117,7 +118,7 @@ Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion mod
   <div class="post-content">
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<p>This repository contains code, data, and utilities for performing super-resolution on MRI images, specifically focused on improving the resolution from 1.5T to 3T MRI scans. The project leverages diffusion models and other machine learning techniques.</p>
+<p>Leveraging diffusion models for super-resolution tasks in MRI.</p>
 <h2 id="demo">Demo<a hidden class="anchor" aria-hidden="true" href="#demo">#</a></h2>
 <h3 id="low-resolution-15t-to-high-resolution-3t-mri">Low Resolution 1.5T to High Resolution 3T MRI<a hidden class="anchor" aria-hidden="true" href="#low-resolution-15t-to-high-resolution-3t-mri">#</a></h3>
 <div style="text-align: center">
@@ -135,18 +136,19 @@ Using a cosine noise schedule, we can gradually add noise to the input image, al
 <ol>
 <li>
 <p><strong>Cosine Schedule for Alphas</strong>:
-$$ \alpha_t = \cos^2\left(\frac{\pi t}{2T}\right) $$</p>
-</li>
+</p>
+$$ \alpha_t = \cos^2\left(\frac{\pi t}{2T}\right) $$</li>
 <li>
 <p><strong>Cumulative Product of Alphas</strong>:
-$$\bar{\alpha_{t}} = \prod_{i=1}^{t}\alpha_i$$</p>
-</li>
+</p>
+$$\bar{\alpha_{t}} = \prod_{i=1}^{t}\alpha_i$$</li>
 <li>
 <p><strong>Forward Noise Process</strong>:
-$$ q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, 0.3(1 - \bar{\alpha}_t) I) $$</p>
-</li>
+</p>
+$$ q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, 0.3(1 - \bar{\alpha}_t) I) $$</li>
 </ol>
-<p>Where:</p>
+<p>\( x_t \) can be sampled as: </p>
+\[ x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{(1 - \bar{\alpha}_t)} \varepsilon_{t}, \text{ where } \varepsilon_{t} \sim \mathcal{N}(0, \mathbf{0.3I}) \]<p>Where:</p>
 <ul>
 <li>\( \alpha_t \) represents the amount of signal retained at time step \( t \).</li>
 <li>\( \bar{\alpha}_t \) is the cumulative product of the alpha values up to time step \( t \).</li>
@@ -156,8 +158,40 @@ $$ q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, 0.3(1 - \bar{\alph
 </ul>
 <h2 id="lrhr-pairs">LR/HR pairs<a hidden class="anchor" aria-hidden="true" href="#lrhr-pairs">#</a></h2>
 <p>We use the Human Connectome Project (HCP) dataset, which contains both 1.5T and 3T MRI scans. The LR images are generated by downsampling the HR images using the spline interpolation method. Then we train the diffusion model on these LR/HR pairs to learn the noise distribution and generate high-resolution images.</p>
-<h2 id="diffusion-model-with-3d-convolutions">Diffusion model with 3D convolutions<a hidden class="anchor" aria-hidden="true" href="#diffusion-model-with-3d-convolutions">#</a></h2>
+<h2 id="reverse-process-using-a-3d-unet">Reverse process using a 3D-Unet<a hidden class="anchor" aria-hidden="true" href="#reverse-process-using-a-3d-unet">#</a></h2>
+<div style="text-align: center">
+    
+   <img src="assets/3DUnetSuperRes.png" alt="Low Resolution MRI" width="600" style="display: block; margin-left: auto; margin-right: auto;" />
+
+</div>
 <p>Our model is based on the original DDPM architecture with 3D convolutions to handle the 3D MRI data. The model consists of a series of diffusion steps, each with a series of 3D convolutions, normalization layers, and a reversible block.</p>
+<ol>
+<li>
+<p><strong>Reverse Noise Schedule for Betas</strong>:
+</p>
+$$ \beta_t = \frac{1 - \alpha_{t+1}}{1 - \bar{\alpha}_{t+1}} $$</li>
+<li>
+<p><strong>Variance of the Reverse Process</strong>:
+</p>
+$$ \sigma_t^2 = \frac{1 - \bar{\alpha}_t}{1 - \bar{\alpha}_{t+1}} \beta_t $$</li>
+<li>
+<p><strong>Reverse Process Sampling</strong>:
+</p>
+$$ p(x_{t-1} \mid x_t, x_0) = \mathcal{N}(x_{t-1}; \mu_t(x_t, x_0), \sigma_t^2 I) $$</li>
+<li>
+<p><strong>Mean of the Reverse Process</strong>:
+</p>
+$$ \mu_t(x_t, x_0) = \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t} x_0 + \frac{\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t} x_t $$</li>
+</ol>
+<p>Where:</p>
+<ul>
+<li>\( \beta_t \) represents the noise variance for the reverse process at time step \( t \).</li>
+<li>\( \sigma_t^2 \) is the variance of the reverse process, which determines how much noise is reduced at each reverse step.</li>
+<li>\( x_t \) is the noisy image at step \( t \).</li>
+<li>\( x_{t-1} \) is the denoised image at the previous step \( t-1 \).</li>
+<li>\( \mu_t(x_t, x_0) \) is the mean of the reverse process, guiding the denoising from \( x_t \) to \( x_{t-1} \).</li>
+<li>\( p(x_{t-1} \mid x_t, x_0) \) represents the probability distribution of the denoised image at step \( t-1 \) given the noisy image at step \( t \) and the original image \( x_0 \).</li>
+</ul>
 <h2 id="contents-of-the-repository">Contents of the Repository<a hidden class="anchor" aria-hidden="true" href="#contents-of-the-repository">#</a></h2>
 <ul>
 <li><a href="#project-structure">Project Structure</a></li>
@@ -170,12 +204,6 @@ $$ q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, 0.3(1 - \bar{\alph
 </ul>
 <h2 id="project-structure">Project Structure<a hidden class="anchor" aria-hidden="true" href="#project-structure">#</a></h2>
 <ul>
-<li>
-<p><strong>assets/</strong>: Contains auxiliary files, such as videos or images used in the project.</p>
-<ul>
-<li><code>mri_slices_combined-ezgif.com-video-to-gif-converter.avi</code>: A video file likely showing combined MRI slices.</li>
-</ul>
-</li>
 <li>
 <p><strong>data/</strong>: Contains the datasets used in the project.</p>
 <ul>
@@ -236,26 +264,10 @@ pip install -r requirements.txt
 </ol>
 <h2 id="usage">Usage<a hidden class="anchor" aria-hidden="true" href="#usage">#</a></h2>
 <p>Instructions on how to run the notebooks, train models, and process the MRI data:</p>
-<ol>
-<li>
-<p><strong>Training the Model:</strong>
-Open <code>DDPM.ipynb</code> in Jupyter Notebook and run the cells to start training the diffusion model.</p>
-</li>
-<li>
 <p><strong>Exploratory Data Analysis:</strong>
 Use <code>eda_notebook.ipynb</code> to explore the dataset before training.</p>
-</li>
-<li>
 <p><strong>Visualization:</strong>
 Run <code>plot_t1w.py</code> to generate visualizations of T1-weighted MRI images.</p>
-</li>
-</ol>
-<h2 id="data">Data<a hidden class="anchor" aria-hidden="true" href="#data">#</a></h2>
-<ul>
-<li><strong>Brats2020</strong>: Use for brain tumor segmentation tasks.</li>
-<li><strong>HCP</strong>: Contains MRI data from the Human Connectome Project.</li>
-<li><strong>MNIST</strong>: Can be used for model testing or as an additional dataset for experiments.</li>
-</ul>
 <h2 id="sample-data">Sample Data<a hidden class="anchor" aria-hidden="true" href="#sample-data">#</a></h2>
 <p>Sample data under <code>sample_data/Structural Preprocessed for 7T</code> is provided to test the pipeline without downloading full datasets.</p>
 <h2 id="utilities">Utilities<a hidden class="anchor" aria-hidden="true" href="#utilities">#</a></h2>
@@ -276,7 +288,7 @@ Run <code>plot_t1w.py</code> to generate visualizations of T1-weighted MRI image
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="http://localhost:63300/">My New Hugo Site</a></span> · 
+        <span>&copy; 2024 <a href="http://localhost:1313/">Hendrik&#39;s Portfolio</a></span> · 
 
     <span>
         Powered by

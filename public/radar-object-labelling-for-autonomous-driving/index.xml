@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Radar Object Labelling for Autonomous Drivings on Hendrik&#39;s Portfolio</title>
+    <link>http://localhost:63594/radar-object-labelling-for-autonomous-driving/</link>
+    <description>Recent content in Radar Object Labelling for Autonomous Drivings on Hendrik&#39;s Portfolio</description>
+    <generator>Hugo -- 0.133.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Aug 2024 12:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:63594/radar-object-labelling-for-autonomous-driving/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My First Post</title>
+      <link>http://localhost:63594/radar-object-labelling-for-autonomous-driving/my-first-post/</link>
+      <pubDate>Wed, 21 Aug 2024 12:00:00 +0000</pubDate>
+      <guid>http://localhost:63594/radar-object-labelling-for-autonomous-driving/my-first-post/</guid>
+      <description>Welcome to my new blog!</description>
+    </item>
+  </channel>
+</rss>
