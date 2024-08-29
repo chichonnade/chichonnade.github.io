@@ -7,10 +7,11 @@
 <meta name="robots" content="index, follow">
 <title>Radar object labelling for autonomous driving | Hendrik&#39;s Portfolio</title>
 <meta name="keywords" content="">
-<meta name="description" content="Radar object labelling for autonomous driving - Hendrik&#39;s Portfolio">
+<meta name="description" content="This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.
+Demo Driving scene showing obstacles detected by our pipeline Raw data from radar and camera sensors Motivation Data Fusion Validation:">
 <meta name="author" content="">
 <link rel="canonical" href="https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.e89167da98a125ec0befca7a575524200f207fdb2add592b38321a7ca772106c.css" integrity="sha256-6JFn2pihJewL78p6V1UkIA8gf9sq3VkrODIafKdyEGw=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://chichonnade.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://chichonnade.github.io/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://chichonnade.github.io/favicon-32x32.png">
@@ -59,7 +60,8 @@
   
 
 <meta property="og:title" content="Radar object labelling for autonomous driving" />
-<meta property="og:description" content="" />
+<meta property="og:description" content="This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.
+Demo Driving scene showing obstacles detected by our pipeline Raw data from radar and camera sensors Motivation Data Fusion Validation:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-08-21T12:00:00+00:00" />
@@ -67,7 +69,8 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Radar object labelling for autonomous driving"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.
+Demo Driving scene showing obstacles detected by our pipeline Raw data from radar and camera sensors Motivation Data Fusion Validation:"/>
 
 
 <script type="application/ld+json">
@@ -96,12 +99,12 @@
   "@type": "BlogPosting",
   "headline": "Radar object labelling for autonomous driving",
   "name": "Radar object labelling for autonomous driving",
-  "description": "",
+  "description": "This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.\nDemo Driving scene showing obstacles detected by our pipeline Raw data from radar and camera sensors Motivation Data Fusion Validation:",
   "keywords": [
     
   ],
-  "articleBody": "",
-  "wordCount" : "0",
+  "articleBody": "This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.\nDemo Driving scene showing obstacles detected by our pipeline Raw data from radar and camera sensors Motivation Data Fusion Validation:\nLabeling objects detected in both radar point clouds and images ensures accurate and consistent data fusion, improving reliability for tasks like object tracking and decision-making.\nEnhanced Object Understanding:\nCombining radar data with image detections provides a richer view of object properties, such as position, velocity, and appearance, aiding in classification and behavior prediction.\nImproved Detection Performance:\nFusing radar and camera data enhances object detection accuracy, reducing false positives and negatives, and confirming object presence in the scene.\nIncreased Safety and Reliability:\nIn autonomous driving and ADAS, labeling objects detected by both radar and camera adds redundancy, boosting system safety and reliability.\nOverview We process the images and radar point clouds separately before merging the outputs to create a robust prediction of the objects surrounding the vehicle. The pipeline consists of the following steps:\nCoordinate Transformation Coordinate transformation involves converting radar data from its native coordinate system (radar space) to a coordinate system that is aligned with the camera data (camera space). This process allows for the integration of information from multiple sensors to improve the accuracy of object detection and localization in complex environments.\nYOLO Object Detection YOLO (You Only Look Once) is a real-time object detection algorithm. It leverages a single neural network to simultaneously predict object classes and bounding boxes for those objects in input images. The algorithm is trained using a large dataset of labeled images and backpropagation to update the weights of the neural network\nRadar point cloud clustering DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is an unsupervised clustering algorithm that identifies clusters by grouping data points that are closely packed together in feature space. It separates distant points as noise, effectively handling clusters of varying shapes and densities. The algorithm expands clusters by iteratively adding nearby points that meet the defined distance (epsilon) and minimum points criteria, continuing until no further points can be included.\nMerging Radar Clusters with Image Labels The final step of the pipeline is to combine the results generated by the clustering and labeling algorithm. Radar point data clusters obtained from the DBSCAN algorithm are merged with object labels generated by the YOLO algorithm for the image data. This combination is accomplished by utilizing the overlapping bounding boxes between the radar points and image labels as a means of matching the results.\nFinal bird’s eye view and limitations Displaying the final results in a bird’s eye view provides a comprehensive overview of the detected objects in the scene. The combined radar and image labels are visualized in a top-down perspective, allowing for easy interpretation of the object positions and orientations.\nStrengths and Opportunities for Improvement in Our End-to-End Pipeline Our end-to-end pipeline has demonstrated strong results in object detection and localization. To further enhance its performance, we have identified a few areas with potential for improvement:\nSensor Quality:\nThe accuracy of our system benefits greatly from high-quality input data from radar and image sensors. By using advanced sensors and improving data quality, we can further boost the pipeline’s performance.\nAlgorithm Enhancement:\nWhile the YOLO object detection and DBSCAN clustering algorithms perform well, there is room for refinement. Enhancing YOLO to better detect small or partially hidden objects and fine-tuning DBSCAN’s hyperparameters can lead to even more precise results.\nOptimized Computational Efficiency:\nOur pipeline is designed for real-time processing, which requires substantial computational power. By optimizing the system for efficiency, we can ensure smooth performance even on lower-end hardware and with large datasets.\nBroader Generalization:\nWe are committed to ensuring that our pipeline excels in diverse and complex environments. Continued testing and validation will help us further improve the system’s robustness in various real-world scenarios.\nCredits: This project was conducted in collaboration with ZENDAR by Hendrik Chiche, Du Xiang, Constantin El Ghazi, and Cheng-Kai Chen.\n",
+  "wordCount" : "699",
   "inLanguage": "en",
   "datePublished": "2024-08-21T12:00:00Z",
   "dateModified": "2024-08-21T12:00:00Z",
@@ -176,6 +179,87 @@
 
 </div>
   </header> 
+  <div class="post-content"><p>This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.</p>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="assets/UC-Berkeley-Symbol.png" alt="UC Berkeley Symbol" width="230">
+    <img src="assets/Fung-Logo.jpg" alt="Fung Logo" width="230">
+    <img src="assets/zendar.png" alt="Zendar Logo" width="230">
+</div>
+<h2 id="demo">Demo<a hidden class="anchor" aria-hidden="true" href="#demo">#</a></h2>
+<div style="text-align: center">
+    
+   <img src="assets/AutomaticRadarLabelingDemo.gif" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+   Driving scene showing obstacles detected by our pipeline
+   <img src="assets/rawdata.png" alt="" width="700" style="display: block; margin-left: auto; margin-right: auto;" />
+   Raw data from radar and camera sensors
+
+</div>
+<h2 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h2>
+<img src="assets/comparison.png" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<ol>
+<li>
+<p><strong>Data Fusion Validation:</strong><br>
+Labeling objects detected in both radar point clouds and images ensures accurate and consistent data fusion, improving reliability for tasks like object tracking and decision-making.</p>
+</li>
+<li>
+<p><strong>Enhanced Object Understanding:</strong><br>
+Combining radar data with image detections provides a richer view of object properties, such as position, velocity, and appearance, aiding in classification and behavior prediction.</p>
+</li>
+<li>
+<p><strong>Improved Detection Performance:</strong><br>
+Fusing radar and camera data enhances object detection accuracy, reducing false positives and negatives, and confirming object presence in the scene.</p>
+</li>
+<li>
+<p><strong>Increased Safety and Reliability:</strong><br>
+In autonomous driving and ADAS, labeling objects detected by both radar and camera adds redundancy, boosting system safety and reliability.</p>
+</li>
+</ol>
+<h2 id="overview">Overview<a hidden class="anchor" aria-hidden="true" href="#overview">#</a></h2>
+<p>We process the images and radar point clouds separately before merging the outputs to create a robust prediction of the objects surrounding the vehicle. The pipeline consists of the following steps:</p>
+<img src="assets/pipeline.png" alt="High Resolution MRI" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<h2 id="coordinate-transformation">Coordinate Transformation<a hidden class="anchor" aria-hidden="true" href="#coordinate-transformation">#</a></h2>
+<p>Coordinate transformation involves converting radar data from its native coordinate system (radar space) to a coordinate system that is aligned with the camera data (camera space). This process allows for the integration of information from multiple sensors to improve the accuracy of object detection and localization in complex environments.</p>
+<p><img src="assets/extrinsics.png" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<img src="assets/2D%20projection.png" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" /></p>
+<h2 id="yolo-object-detection">YOLO Object Detection<a hidden class="anchor" aria-hidden="true" href="#yolo-object-detection">#</a></h2>
+<p>YOLO (You Only Look Once) is a real-time object detection algorithm. It leverages a single neural network to simultaneously predict object classes and bounding boxes for those objects in input images. The algorithm is trained using a large dataset of labeled images and backpropagation to update the weights of the neural network</p>
+<img src="assets/yolo.png" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<h2 id="radar-point-cloud-clustering">Radar point cloud clustering<a hidden class="anchor" aria-hidden="true" href="#radar-point-cloud-clustering">#</a></h2>
+<p>DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is an unsupervised clustering algorithm that identifies clusters by grouping data points that are closely packed together in feature space. It separates distant points as noise, effectively handling clusters of varying shapes and densities. The algorithm expands clusters by iteratively adding nearby points that meet the defined distance (epsilon) and minimum points criteria, continuing until no further points can be included.</p>
+<img src="assets/clustering.png" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<h2 id="merging-radar-clusters-with-image-labels">Merging Radar Clusters with Image Labels<a hidden class="anchor" aria-hidden="true" href="#merging-radar-clusters-with-image-labels">#</a></h2>
+<p>The final step of the pipeline is to combine the results generated by the clustering and labeling algorithm. Radar point data clusters obtained from the DBSCAN algorithm are merged with object labels generated by the YOLO algorithm for the image data. This combination is accomplished by utilizing the overlapping bounding boxes between the radar points and image labels as a means of matching the results.</p>
+<p><img src="assets/majority%20vote.png" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<img src="assets/beforeaftermerge.png" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" /></p>
+<h2 id="final-birds-eye-view-and-limitations">Final bird&rsquo;s eye view and limitations<a hidden class="anchor" aria-hidden="true" href="#final-birds-eye-view-and-limitations">#</a></h2>
+<p>Displaying the final results in a bird&rsquo;s eye view provides a comprehensive overview of the detected objects in the scene. The combined radar and image labels are visualized in a top-down perspective, allowing for easy interpretation of the object positions and orientations.</p>
+<img src="assets/birdseyeview.png" alt="" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<h2 id="strengths-and-opportunities-for-improvement-in-our-end-to-end-pipeline">Strengths and Opportunities for Improvement in Our End-to-End Pipeline<a hidden class="anchor" aria-hidden="true" href="#strengths-and-opportunities-for-improvement-in-our-end-to-end-pipeline">#</a></h2>
+<p>Our end-to-end pipeline has demonstrated strong results in object detection and localization. To further enhance its performance, we have identified a few areas with potential for improvement:</p>
+<ol>
+<li>
+<p><strong>Sensor Quality:</strong><br>
+The accuracy of our system benefits greatly from high-quality input data from radar and image sensors. By using advanced sensors and improving data quality, we can further boost the pipeline&rsquo;s performance.</p>
+</li>
+<li>
+<p><strong>Algorithm Enhancement:</strong><br>
+While the YOLO object detection and DBSCAN clustering algorithms perform well, there is room for refinement. Enhancing YOLO to better detect small or partially hidden objects and fine-tuning DBSCAN&rsquo;s hyperparameters can lead to even more precise results.</p>
+</li>
+<li>
+<p><strong>Optimized Computational Efficiency:</strong><br>
+Our pipeline is designed for real-time processing, which requires substantial computational power. By optimizing the system for efficiency, we can ensure smooth performance even on lower-end hardware and with large datasets.</p>
+</li>
+<li>
+<p><strong>Broader Generalization:</strong><br>
+We are committed to ensuring that our pipeline excels in diverse and complex environments. Continued testing and validation will help us further improve the system&rsquo;s robustness in various real-world scenarios.</p>
+</li>
+</ol>
+<p><br><br>
+<span style="color: grey;"> Credits:</span> <br>
+<span style="color: grey;">This project was conducted in collaboration with <a href="https://www.zendar.io/">ZENDAR</a> by Hendrik Chiche, Du Xiang, Constantin El Ghazi, and Cheng-Kai Chen.</span></p>
+
+
+  </div>
 
   <footer class="post-footer">
     <ul class="post-tags">

@@ -5,21 +5,21 @@ draft: false
 ---
 {{< mathjax >}}
 
-Leveraging diffusion models for super-resolution tasks in MRI.
+By leveraging diffusion models, low-resolution MRI scans are upgraded to high-resolution images. The model is trained on image pairs, enabling it to learn noise reduction and generate clearer, more detailed MRI scans.
 
 ## Demo
 
 ### Low Resolution 1.5T to High Resolution 3T MRI
 {{< text_align align="center" >}}
-   {{< image_center src="assets/mri_slice_LR.gif" alt="Low Resolution MRI" width="800" >}}
-   {{< image_center src="assets/mri_slice_HR.gif" alt="High Resolution MRI" width="800" >}}
+   {{< image_center src="assets/mri_slice_LR.gif" alt="Low Resolution MRI" width="900" >}}
+   {{< image_center src="assets/mri_slice_HR.gif" alt="High Resolution MRI" width="900" >}}
 {{< /text_align >}}
 
 ## Overview
 Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs. Using a cascade of these models, we can achieve significant improvements in image quality.
 
 ## Forward noise process
-{{< image_center src="assets/cosine_noise_scheduler.png" alt="High Resolution MRI" width="800" >}}
+{{< image_center src="assets/cosine_noise_scheduler.png" alt="High Resolution MRI" width="900" >}}
 Using a cosine noise schedule, we can gradually add noise to the input image, allowing the model to learn the noise distribution and generate high-resolution images. The noise variance is increased over 1000 steps with a maximum variance of 0.3 at the final step to prevent adding out-of-bound noise values.
 
 Here are the formulas used:
@@ -53,7 +53,7 @@ We use the Human Connectome Project (HCP) dataset, which contains both 1.5T and 
    {{< image_center src="assets/3DUnetSuperRes.png" alt="Low Resolution MRI" width="600" >}}
 {{< /text_align >}}
 
-Our model is based on the original DDPM architecture with 3D convolutions to handle the 3D MRI data. The model consists of a series of diffusion steps, each with a series of 3D convolutions, normalization layers, and a reversible block.
+Our model is based on the original DDPM architecture with 3D convolutions to handle the 3D MRI data. The model consists of a series of diffusion steps, each with a series of 3D convolutions, normalization layers, and attention blocks.
 
 1. **Reverse Noise Schedule for Betas**:
    $$ \beta_t = \frac{1 - \alpha_{t+1}}{1 - \bar{\alpha}_{t+1}} $$
@@ -76,81 +76,13 @@ Where:
 - \\( \\mu_t(x_t, x_0) \\) is the mean of the reverse process, guiding the denoising from \\( x_t \\) to \\( x_{t-1} \\).
 - \\( p(x_{t-1} \\mid x_t, x_0) \\) represents the probability distribution of the denoised image at step \\( t-1 \\) given the noisy image at step \\( t \\) and the original image \\( x_0 \\).
 
-## Contents of the Repository
+## Updates
 
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Data](#data)
-- [Sample Data](#sample-data)
-- [Utilities](#utilities)
-- [License](#license)
+Currently assessing the performance of two reverse process models. A 3D-Unet for best performance and a combination of 3 2D-Unets to reduce training cost.
 
-## Project Structure
+<br><br>
+<span style="color: grey;"> Credits:</span> <br>
+<span style="color: grey;">This project was conducted in collaboration with [GENCI](https://www.genci.fr/en) who provided the computational ressources. Authored by Hendrik Chiche, Ludovic Corcos and Logan Rouge.
+</span>
 
-- **data/**: Contains the datasets used in the project.
-  - **Brats2020/**: Dataset related to the BraTS 2020 competition, focusing on brain tumor segmentation.
-  - **HCP/**: Dataset from the Human Connectome Project (HCP), used for MRI data.
-  - **MNIST/**: Contains the MNIST dataset, possibly used for experimentation or model testing.
-
-- **sample_data/**: Contains sample data for testing or demo purposes.
-  - **Structural Preprocessed for 7T (1.6mm/59k mesh)**: Preprocessed structural data intended for use with 7T MRI resolution.
-    - `100610_3T_Structural_1.6mm_preproc.zip`: A ZIP file containing the preprocessed data for 3T MRI.
-    - `100610_3T_Structural_1.6mm_preproc.zip.md5`: MD5 checksum for the ZIP file to verify its integrity.
-
-- **utils/**: Utility scripts and notebooks for the project.
-  - `DDPM.ipynb`: A Jupyter notebook for training or experimenting with the DDPM model.
-  - `diffusion_model_mnist.pth`: A pre-trained diffusion model on the MNIST dataset.
-  - `eda_notebook.ipynb`: An exploratory data analysis (EDA) notebook.
-  - `me.jpg`: An image file, possibly a personal photo or a sample image for testing.
-  - `mri_slices_combined.avi`: Another video file, likely related to MRI data visualization.
-  - `plot_t1w.py`: A Python script for plotting T1-weighted MRI images.
-
-- **venv/**: Virtual environment for managing project dependencies.
-
-## Installation
-
-To set up the environment for this project:
-
-1. Clone the repository:
-   \`\`\`bash
-   git clone https://github.com/your-username/MRI-Super-Resolution.git
-   \`\`\`
-2. Navigate to the project directory:
-   \`\`\`bash
-   cd MRI-Super-Resolution
-   \`\`\`
-3. Create a virtual environment:
-   \`\`\`bash
-   python3 -m venv venv
-   \`\`\`
-4. Activate the virtual environment:
-   \`\`\`bash
-   source venv/bin/activate  # On Windows: venv\Scriptsctivate
-   \`\`\`
-5. Install the required packages:
-   \`\`\`bash
-   pip install -r requirements.txt
-   \`\`\`
-
-## Usage
-
-Instructions on how to run the notebooks, train models, and process the MRI data:
-
-**Exploratory Data Analysis:**
-   Use `eda_notebook.ipynb` to explore the dataset before training.
-
-**Visualization:**
-   Run `plot_t1w.py` to generate visualizations of T1-weighted MRI images.
-
-## Sample Data
-
-Sample data under `sample_data/Structural Preprocessed for 7T` is provided to test the pipeline without downloading full datasets.
-
-## Utilities
-
-- **Scripts and notebooks**: Utility files provided in the `utils/` directory to assist with model training, data exploration, and visualization.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+{{< image_center src="assets/genci.png" width="300" >}}
