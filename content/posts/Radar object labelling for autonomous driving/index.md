@@ -6,10 +6,12 @@ draft: false
 
 This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.
 
+#### Code : https://github.com/chichonnade/ZendarComputerVisionCapstone
+
 <div style="display: flex; justify-content: space-between; align-items: center;">
-    <img src="assets/UC-Berkeley-Symbol.png" alt="UC Berkeley Symbol" width="230">
-    <img src="assets/Fung-Logo.jpg" alt="Fung Logo" width="230">
-    <img src="assets/zendar.png" alt="Zendar Logo" width="230">
+    <img src="assets/UC-Berkeley-Symbol.png" alt="UC Berkeley Symbol" width="210">
+    <img src="assets/Fung-Logo.jpg" alt="Fung Logo" width="210">
+    <img src="assets/zendar.png" alt="Zendar Logo" width="210">
 </div>
 
 ## Demo

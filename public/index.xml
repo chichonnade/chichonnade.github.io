@@ -14,7 +14,7 @@
       <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://chichonnade.github.io/posts/mri-super-resolution/</guid>
       <description>By leveraging diffusion models, low-resolution MRI scans are upgraded to high-resolution images. The model is trained on image pairs, enabling it to learn noise reduction and generate clearer, more detailed MRI scans.
-Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs.</description>
+Code : https://github.com/chichonnade/MRI-Super-Resolution/tree/main Demo : Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images.</description>
     </item>
     <item>
       <title>Radar object labelling for autonomous driving</title>
@@ -22,7 +22,7 @@ Demo Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion mod
       <pubDate>Wed, 21 Jun 2023 12:00:00 +0000</pubDate>
       <guid>https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/</guid>
       <description>This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.
-Demo Driving scene showing obstacles detected by our pipeline Raw data from radar and camera sensors Motivation Data Fusion Validation:</description>
+Code : https://github.com/chichonnade/ZendarComputerVisionCapstone Demo Driving scene showing obstacles detected by our pipeline Raw data from radar and camera sensors Motivation Data Fusion Validation:</description>
     </item>
   </channel>
 </rss>

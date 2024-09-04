@@ -7,9 +7,10 @@ draft: false
 
 By leveraging diffusion models, low-resolution MRI scans are upgraded to high-resolution images. The model is trained on image pairs, enabling it to learn noise reduction and generate clearer, more detailed MRI scans.
 
-## Demo
+#### Code : https://github.com/chichonnade/MRI-Super-Resolution/tree/main
 
-### Low Resolution 1.5T to High Resolution 3T MRI
+## Demo : Low Resolution 1.5T to High Resolution 3T MRI
+
 {{< text_align align="center" >}}
    {{< image_center src="assets/mri_slice_LR.gif" alt="Low Resolution MRI" width="900" >}}
    {{< image_center src="assets/mri_slice_HR.gif" alt="High Resolution MRI" width="900" >}}
