@@ -23,15 +23,39 @@ markup:
 params:
   math: true
   defaultTheme: auto
+  ShowShareButtons: false
+  ShowReadingTime: false
+  ShowPostNavLinks: false
   homeInfoParams:
     Title: "\U0001F44B Hi welcome to my page "
     Content: >-
-      I'm Hendrik, an Analytics Engineer with a background in Physics. Based in San Francisco, I'm always looking for new opportunities to collaborate on interesting projects. Currently working at the intersection of AI and healthcare. Feel free to reach out to me if you have any questions or would like to chat.
-        
+      <div style="text-align: center; margin: 20px 0;">
+        <img src="/images/me.jpg" alt="Hendrik" style="max-width: 200px; border-radius: 10px; margin: 0 auto; display: block;">
+      </div>
+      
+      <div style="margin: 2px 0;">
+        <p>I'm Hendrik,</p>
+        <p>I currently work as a data analyst in the operations team at Mainspring Energy Inc. to predict fleet reliability using data science.</p>
+        <p>Prior to that, I received two masters degrees in Mechanical Engineering from UC Berkeley and Arts et Métiers ParisTech (France).</p>
+      </div>
+
+      <div style="margin: 2px 0;">
+        <p>I'm interested in robotics and deep learning and advise robotics projects at UC Berkeley on the transfer of skills from humans to robots.</p>
+      </div>
+
+      <div style="margin: 2px 0;">
+        <p>During my free time, I enjoy surfing unridden waves between SF and Santa Cruz.</p>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <img src="/images/robotics.gif" alt="Robotics Demo" style="max-width: 600px; border-radius: 10px; margin: 0 auto; display: block;">
+      </div>
+      <h2 style="text-align: center;">Links</h2>
+    AlignSocialIconsTo: center
   socialIcons:
-    - name: email
-      url: 'hendrikchiche@gmail.com'
     - name: linkedin
       url: https://www.linkedin.com/in/hendrikchiche/
     - name: github
       url: https://github.com/chichonnade
+    - name: cv
+      url: /resume.pdf
