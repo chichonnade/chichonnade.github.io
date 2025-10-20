@@ -2,6 +2,9 @@
 title: "Radar object labelling for autonomous driving"
 date: 2023-06-21T12:00:00Z
 draft: false
+cover:
+  image: assets/AutomaticRadarLabelingDemo.gif
+  alt: "Zendar Radar Labeling"
 ---
 
 This project improves object detection in autonomous vehicles by integrating radar and camera data. The pipeline processes and aligns data from both sensors, detects objects using YOLO, and clusters radar points with DBSCAN. The merged results offer a precise and reliable view of the vehicle’s surroundings, enhancing detection accuracy and safety in complex environments.

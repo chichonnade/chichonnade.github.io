@@ -26,6 +26,8 @@ params:
   ShowShareButtons: false
   ShowReadingTime: false
   ShowPostNavLinks: false
+  cover:
+    hiddenInSingle: true
   homeInfoParams:
     Title: "\U0001F44B Hi welcome to my page "
     Content: >-

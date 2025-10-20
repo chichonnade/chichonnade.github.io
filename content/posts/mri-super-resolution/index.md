@@ -2,6 +2,9 @@
 title: "Super-Resolution for medical imaging"
 date: 2024-08-21
 draft: false
+cover:
+  image: assets/mri_slice_HR.gif
+  alt: "3D U-Net for MRI Super-Resolution"
 ---
 {{< mathjax >}}
 

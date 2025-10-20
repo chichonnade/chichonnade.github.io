@@ -2,6 +2,9 @@
 title: "Undergrad research project: Electrostatic Particle Repeller"
 date: 2021-06-15
 draft: false
+cover:
+  image: assets/model.png
+  alt: "Electrostatic Discharger Concept"
 ---
 {{< mathjax >}}
 ---

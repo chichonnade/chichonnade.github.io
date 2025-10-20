@@ -1,0 +1,26 @@
+/* Reduce cover image size on homepage cards (override theme defaults) */
+.post-entry .entry-cover {
+  display: flex;
+  justify-content: center;
+}
+
+.post-entry .entry-cover img {
+  width: auto !important;      /* override theme's width: 100% */
+  height: auto !important;     /* ignore width/height attributes */
+  max-width: 400px;            /* tune as desired */
+  max-height: 180px;           /* tune as desired */
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: var(--radius);
+}
+
+/* Featured/first entry can be slightly larger */
+.first-entry .entry-cover img {
+  width: auto !important;
+  height: auto !important;
+  max-width: 300px;
+  max-height: 160px;
+  object-fit: contain;
+}
+
