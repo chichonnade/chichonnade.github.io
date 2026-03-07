@@ -2,25 +2,25 @@
 <html lang="en" dir="auto">
 
 <head>
-	<meta name="generator" content="Hugo 0.133.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+	<meta name="generator" content="Hugo 0.133.0"><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>Hendrik&#39;s Portfolio</title>
 
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/">
+<link rel="canonical" href="https://chichonnade.github.io/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.e519eab4771929a9ba36f76a121cc09c818d15e04c793ceb606ca68ec45114cf.css" integrity="sha256-5RnqtHcZKam6NvdqEhzAnIGNFeBMeTzrYGymjsRRFM8=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://chichonnade.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://chichonnade.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://chichonnade.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://chichonnade.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://chichonnade.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<link rel="alternate" type="application/rss+xml" href="https://chichonnade.github.io/index.xml">
+<link rel="alternate" hreflang="en" href="https://chichonnade.github.io/">
 <noscript>
     <style>
         #theme-toggle,
@@ -58,6 +58,30 @@
 
     </style>
 </noscript>
+  
+
+<meta property="og:title" content="Hendrik&#39;s Portfolio" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://chichonnade.github.io/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hendrik&#39;s Portfolio"/>
+<meta name="twitter:description" content=""/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Hendrik's Portfolio",
+  "url": "https://chichonnade.github.io/",
+  "description": "",
+  "thumbnailUrl": "https://chichonnade.github.io/favicon.ico",
+  "sameAs": [
+      "https://www.linkedin.com/in/hendrikchiche/", "https://github.com/chichonnade", "/resume.pdf"
+  ]
+}
+</script>
 </head>
 
 <body class="list" id="top">
@@ -75,7 +99,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Hendrik&#39;s Portfolio (Alt + H)">Hendrik&#39;s Portfolio</a>
+            <a href="https://chichonnade.github.io/" accesskey="h" title="Hendrik&#39;s Portfolio (Alt + H)">Hendrik&#39;s Portfolio</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -166,18 +190,20 @@
 
 <article class="post-entry">
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Super-Resolution for medical imaging
+    <h2 class="entry-hint-parent">3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models
     </h2>
   </header>
   <div class="entry-content">
-    <p>By leveraging diffusion models, low-resolution MRI scans are upgraded to high-resolution images. The model is trained on image pairs, enabling it to learn noise reduction and generate clearer, more detailed MRI scans.
-Code : https://github.com/chichonnade/MRI-Super-Resolution/tree/main Demo : Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images....</p>
+    <p>We compare two U-Net architectures — a full 3D convolutional U-Net and a 2.5D slice-conditioned U-Net — for brain MRI super-resolution using the Elucidated Diffusion Model (EDM) framework. Trained on just 59 subjects from the FOMO60K dataset, the 3D model achieves 37.77 dB PSNR and 0.996 SSIM on 2x super-resolution, surpassing pretrained EDSR and Swin2SR baselines by over 2 dB.
+Code: GitHub | Weights: HuggingFace | Dataset: FOMO60K / NKI Demo: Low Resolution to High Resolution MRI Methods We adopt the EDM framework (Karras et al....</p>
   </div>
   <footer class="entry-footer"><span title='2024-08-21 00:00:00 +0000 UTC'>August 21, 2024</span></footer> 
 <figure class="entry-cover">
-        <img loading="lazy" src="http://localhost:1313/posts/mri-super-resolution/assets/mri_slice_HR.gif" alt="3D U-Net for MRI Super-Resolution">
+        <img loading="lazy" srcset="https://chichonnade.github.io/posts/mri-super-resolution/assets/mri_slice_HR_hu2666142033760932098.gif 360w ,https://chichonnade.github.io/posts/mri-super-resolution/assets/mri_slice_HR_hu14081240808485702331.gif 480w ,https://chichonnade.github.io/posts/mri-super-resolution/assets/mri_slice_HR.gif 600w" 
+            sizes="(min-width: 768px) 720px, 100vw" src="https://chichonnade.github.io/posts/mri-super-resolution/assets/mri_slice_HR.gif" alt="MRI Super-Resolution via EDM" 
+            width="600" height="200">
 </figure>
-  <a class="entry-link" aria-label="post link to Super-Resolution for medical imaging" href="http://localhost:1313/posts/mri-super-resolution/"></a>
+  <a class="entry-link" aria-label="post link to 3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models" href="https://chichonnade.github.io/posts/mri-super-resolution/"></a>
 </article>
 
 <article class="post-entry">
@@ -191,9 +217,11 @@ Code : https://github.com/chichonnade/ZendarComputerVisionCapstone Demo Driving 
   </div>
   <footer class="entry-footer"><span title='2023-06-21 12:00:00 +0000 UTC'>June 21, 2023</span></footer> 
 <figure class="entry-cover">
-        <img loading="lazy" src="http://localhost:1313/posts/radar-object-labelling-for-autonomous-driving/assets/AutomaticRadarLabelingDemo.gif" alt="Zendar Radar Labeling">
+        <img loading="lazy" srcset="https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/assets/AutomaticRadarLabelingDemo_hu12788536359693353259.gif 360w ,https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/assets/AutomaticRadarLabelingDemo_hu17951747359681312331.gif 480w ,https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/assets/AutomaticRadarLabelingDemo.gif 600w" 
+            sizes="(min-width: 768px) 720px, 100vw" src="https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/assets/AutomaticRadarLabelingDemo.gif" alt="Zendar Radar Labeling" 
+            width="600" height="306">
 </figure>
-  <a class="entry-link" aria-label="post link to Radar object labelling for autonomous driving" href="http://localhost:1313/posts/radar-object-labelling-for-autonomous-driving/"></a>
+  <a class="entry-link" aria-label="post link to Radar object labelling for autonomous driving" href="https://chichonnade.github.io/posts/radar-object-labelling-for-autonomous-driving/"></a>
 </article>
 
 <article class="post-entry">
@@ -210,14 +238,16 @@ $$ V = \frac{Q}{C} $$where:
   </div>
   <footer class="entry-footer"><span title='2021-06-15 00:00:00 +0000 UTC'>June 15, 2021</span></footer> 
 <figure class="entry-cover">
-        <img loading="lazy" src="http://localhost:1313/posts/electrostatic-particle-repeller/assets/model.png" alt="Electrostatic Discharger Concept">
+        <img loading="lazy" srcset="https://chichonnade.github.io/posts/electrostatic-particle-repeller/assets/model_hu6145346879817312617.png 360w ,https://chichonnade.github.io/posts/electrostatic-particle-repeller/assets/model_hu8969119396656236033.png 480w ,https://chichonnade.github.io/posts/electrostatic-particle-repeller/assets/model_hu4486031813177298807.png 720w ,https://chichonnade.github.io/posts/electrostatic-particle-repeller/assets/model_hu4782870573468363079.png 1080w ,https://chichonnade.github.io/posts/electrostatic-particle-repeller/assets/model_hu5450463745666856907.png 1500w ,https://chichonnade.github.io/posts/electrostatic-particle-repeller/assets/model.png 2212w" 
+            sizes="(min-width: 768px) 720px, 100vw" src="https://chichonnade.github.io/posts/electrostatic-particle-repeller/assets/model.png" alt="Electrostatic Discharger Concept" 
+            width="2212" height="1144">
 </figure>
-  <a class="entry-link" aria-label="post link to Undergrad research project: Electrostatic Particle Repeller" href="http://localhost:1313/posts/electrostatic-particle-repeller/"></a>
+  <a class="entry-link" aria-label="post link to Undergrad research project: Electrostatic Particle Repeller" href="https://chichonnade.github.io/posts/electrostatic-particle-repeller/"></a>
 </article>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Hendrik&#39;s Portfolio</a></span> · 
+        <span>&copy; 2026 <a href="https://chichonnade.github.io/">Hendrik&#39;s Portfolio</a></span> · 
 
     <span>
         Powered by

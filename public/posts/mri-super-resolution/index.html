@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Super-Resolution for medical imaging | Hendrik&#39;s Portfolio</title>
+<meta name="robots" content="index, follow">
+<title>3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models | Hendrik&#39;s Portfolio</title>
 <meta name="keywords" content="">
-<meta name="description" content="By leveraging diffusion models, low-resolution MRI scans are upgraded to high-resolution images. The model is trained on image pairs, enabling it to learn noise reduction and generate clearer, more detailed MRI scans.
-Code : https://github.com/chichonnade/MRI-Super-Resolution/tree/main Demo : Low Resolution 1.5T to High Resolution 3T MRI Overview Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images.">
+<meta name="description" content="We compare two U-Net architectures &mdash; a full 3D convolutional U-Net and a 2.5D slice-conditioned U-Net &mdash; for brain MRI super-resolution using the Elucidated Diffusion Model (EDM) framework. Trained on just 59 subjects from the FOMO60K dataset, the 3D model achieves 37.77 dB PSNR and 0.996 SSIM on 2x super-resolution, surpassing pretrained EDSR and Swin2SR baselines by over 2 dB.
+Code: GitHub | Weights: HuggingFace | Dataset: FOMO60K / NKI Demo: Low Resolution to High Resolution MRI Methods We adopt the EDM framework (Karras et al.">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/posts/mri-super-resolution/">
+<link rel="canonical" href="https://chichonnade.github.io/posts/mri-super-resolution/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.e519eab4771929a9ba36f76a121cc09c818d15e04c793ceb606ca68ec45114cf.css" integrity="sha256-5RnqtHcZKam6NvdqEhzAnIGNFeBMeTzrYGymjsRRFM8=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://chichonnade.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://chichonnade.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://chichonnade.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://chichonnade.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://chichonnade.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/mri-super-resolution/">
+<link rel="alternate" hreflang="en" href="https://chichonnade.github.io/posts/mri-super-resolution/">
 <noscript>
     <style>
         #theme-toggle,
@@ -57,6 +57,73 @@ Code : https://github.com/chichonnade/MRI-Super-Resolution/tree/main Demo : Low 
 
     </style>
 </noscript>
+  
+
+<meta property="og:title" content="3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models" />
+<meta property="og:description" content="We compare two U-Net architectures &mdash; a full 3D convolutional U-Net and a 2.5D slice-conditioned U-Net &mdash; for brain MRI super-resolution using the Elucidated Diffusion Model (EDM) framework. Trained on just 59 subjects from the FOMO60K dataset, the 3D model achieves 37.77 dB PSNR and 0.996 SSIM on 2x super-resolution, surpassing pretrained EDSR and Swin2SR baselines by over 2 dB.
+Code: GitHub | Weights: HuggingFace | Dataset: FOMO60K / NKI Demo: Low Resolution to High Resolution MRI Methods We adopt the EDM framework (Karras et al." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://chichonnade.github.io/posts/mri-super-resolution/" />
+<meta property="og:image" content="https://chichonnade.github.io/assets/mri_slice_HR.gif" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-08-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-08-21T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://chichonnade.github.io/assets/mri_slice_HR.gif" />
+<meta name="twitter:title" content="3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models"/>
+<meta name="twitter:description" content="We compare two U-Net architectures &mdash; a full 3D convolutional U-Net and a 2.5D slice-conditioned U-Net &mdash; for brain MRI super-resolution using the Elucidated Diffusion Model (EDM) framework. Trained on just 59 subjects from the FOMO60K dataset, the 3D model achieves 37.77 dB PSNR and 0.996 SSIM on 2x super-resolution, surpassing pretrained EDSR and Swin2SR baselines by over 2 dB.
+Code: GitHub | Weights: HuggingFace | Dataset: FOMO60K / NKI Demo: Low Resolution to High Resolution MRI Methods We adopt the EDM framework (Karras et al."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://chichonnade.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models",
+      "item": "https://chichonnade.github.io/posts/mri-super-resolution/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models",
+  "name": "3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models",
+  "description": "We compare two U-Net architectures \u0026mdash; a full 3D convolutional U-Net and a 2.5D slice-conditioned U-Net \u0026mdash; for brain MRI super-resolution using the Elucidated Diffusion Model (EDM) framework. Trained on just 59 subjects from the FOMO60K dataset, the 3D model achieves 37.77 dB PSNR and 0.996 SSIM on 2x super-resolution, surpassing pretrained EDSR and Swin2SR baselines by over 2 dB.\nCode: GitHub | Weights: HuggingFace | Dataset: FOMO60K / NKI Demo: Low Resolution to High Resolution MRI Methods We adopt the EDM framework (Karras et al.",
+  "keywords": [
+    
+  ],
+  "articleBody": " We compare two U-Net architectures — a full 3D convolutional U-Net and a 2.5D slice-conditioned U-Net — for brain MRI super-resolution using the Elucidated Diffusion Model (EDM) framework. Trained on just 59 subjects from the FOMO60K dataset, the 3D model achieves 37.77 dB PSNR and 0.996 SSIM on 2x super-resolution, surpassing pretrained EDSR and Swin2SR baselines by over 2 dB.\nCode: GitHub | Weights: HuggingFace | Dataset: FOMO60K / NKI Demo: Low Resolution to High Resolution MRI Methods We adopt the EDM framework (Karras et al., NeurIPS 2022), which parameterizes diffusion using a continuous noise level \\( \\sigma \\) rather than discrete timesteps. The noisy observation is:\n$$ \\mathbf{x}\\_\\sigma = \\mathbf{x}\\_\\text{HR} + \\sigma \\cdot \\boldsymbol{\\epsilon}, \\quad \\boldsymbol{\\epsilon} \\sim \\mathcal{N}(\\mathbf{0}, \\mathbf{I}) $$The denoiser \\( D_\\theta \\) is preconditioned as:\n$$ D\\_\\theta(\\mathbf{x}\\_\\sigma, \\sigma) = c\\_\\text{skip}\\,\\mathbf{x}\\_\\sigma + c\\_\\text{out}\\,F\\_\\theta\\!\\bigl(c\\_\\text{in}\\,\\mathbf{x}\\_\\sigma,\\; c\\_\\text{noise},\\; \\mathbf{x}\\_\\text{LR}\\bigr) $$where \\( F_\\theta \\) is the U-Net backbone and the scaling functions \\( c_\\text{in}, c_\\text{skip}, c_\\text{out}, c_\\text{noise} \\) depend on \\( \\sigma \\) and a data standard deviation \\( \\sigma_\\text{data} \\). During training, \\( \\sigma \\) is sampled from a log-normal distribution. The model is trained to minimize:\n$$ \\mathcal{L} = \\mathbb{E}\\_{\\sigma,\\, \\mathbf{x}\\_\\text{HR},\\, \\boldsymbol{\\epsilon}} \\bigl[\\|D\\_\\theta(\\mathbf{x}\\_\\sigma, \\sigma) - \\mathbf{x}\\_\\text{HR}\\|^2\\bigr] $$Architecture 3D Convolutional U-Net The 3D model operates on volumetric patches of shape \\( (B, C, D, H, W) \\). It uses a 4-level encoder-decoder with channel dimensions [32, 64, 128, 256], 3D convolutions (3x3x3), adaptive group normalization conditioned on \\( c_\\text{noise} \\), and multi-head self-attention with flash attention at the deepest level. The LR volume is trilinearly upsampled and concatenated with the noisy HR target. Inference uses a 20-step Euler sampler with sliding-window overlap blending. 50.7M parameters.\n2.5D Slice-Conditioned U-Net The 2.5D model decomposes volumetric SR into per-slice 2D tasks with inter-slice conditioning. For each target slice, it receives: (1) one adjacent LR slice (bicubic-upsampled), (2) the target LR slice (upsampled), and (3) the noisy HR target — concatenated along channels. The 2D U-Net has channel dimensions [64, 64, 128, 256] with self-attention at the deepest level. Inference uses a single-step Heun sampler (0.09 s/slice on Apple MPS). 51.1M parameters.\nTraining Both models are trained with AdamW (lr = 1e-4) for 10 epochs on a single NVIDIA L4 GPU (22 GB). The codebase adapts the DIAMOND framework (Alonso et al., NeurIPS 2024) for MRI super-resolution.\nDataset We use the NKI (Nathan Kline Institute) cohort from the FOMO60K dataset, which provides T1-weighted structural brain MRI volumes at approximately 1 mm isotropic resolution. Volumes are intensity-normalized to [0, 255] using the 1st–99th percentile range, then sliced along the sagittal axis. Each slice is downsampled by a factor of 2 using block averaging to produce the LR input (128x128), with the corresponding HR slice (256x256) as ground truth.\nTrain/test split: 59 subjects (100 sessions) for training; 5 subjects (6 sessions, 993 slices) held out for testing. The split is at the subject level to prevent data leakage.\nResults Method PSNR (dB) ↑ SSIM ↑ LPIPS ↓ Params Bicubic interpolation 33.89 0.957 0.091 — EDSR (DIV2K pretrained) 35.57 0.977 0.024 1.4M Swin2SR (DIV2K pretrained) 35.50 0.978 0.024 1.0M 2.5D EDM (ours, 10 ep) 35.82 0.971 0.040 51.1M 3D EDM (ours, 10 ep) 37.77 0.996 0.029 50.7M All methods evaluated on identical test data and degradation pipeline. EDSR and Swin2SR use pretrained DIV2K weights without MRI fine-tuning.\nPSNR and SSIM Comparison Visual Comparison (3D Model) Ground truth HR, model prediction, and trilinear baseline across sagittal, axial, and coronal views:\nVisual Comparison (2.5D Model) Per-Subject PSNR Per-Pixel Error Heatmap Per-pixel absolute error for a mid-sagittal slice comparing bicubic, trilinear, and 2.5D EDM reconstructions against ground truth:\nPer-Slice PSNR PSNR across the sagittal axis for one test subject. Higher PSNR near volume edges where slices contain less complex anatomy; lower in central slices with denser cortical detail:\nCredits: This project was conducted in collaboration with GENCI who provided the computational resources. Authored by Hendrik Chiche, Ludovic Corcos and Logan Rouge. ",
+  "wordCount" : "649",
+  "inLanguage": "en",
+  "image":"https://chichonnade.github.io/assets/mri_slice_HR.gif","datePublished": "2024-08-21T00:00:00Z",
+  "dateModified": "2024-08-21T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://chichonnade.github.io/posts/mri-super-resolution/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hendrik's Portfolio",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://chichonnade.github.io/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 
 <body class="" id="top">
@@ -74,7 +141,7 @@ Code : https://github.com/chichonnade/MRI-Super-Resolution/tree/main Demo : Low 
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Hendrik&#39;s Portfolio (Alt + H)">Hendrik&#39;s Portfolio</a>
+            <a href="https://chichonnade.github.io/" accesskey="h" title="Hendrik&#39;s Portfolio (Alt + H)">Hendrik&#39;s Portfolio</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -108,7 +175,7 @@ Code : https://github.com/chichonnade/MRI-Super-Resolution/tree/main Demo : Low 
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      Super-Resolution for medical imaging
+      3D vs 2.5D U-Net for MRI Super-Resolution via Elucidated Diffusion Models
     </h1>
     <div class="post-meta"><span title='2024-08-21 00:00:00 +0000 UTC'>August 21, 2024</span>
 
@@ -117,85 +184,102 @@ Code : https://github.com/chichonnade/MRI-Super-Resolution/tree/main Demo : Low 
   <div class="post-content">
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<p>By leveraging diffusion models, low-resolution MRI scans are upgraded to high-resolution images. The model is trained on image pairs, enabling it to learn noise reduction and generate clearer, more detailed MRI scans.</p>
-<h4 id="code--httpsgithubcomchichonnademri-super-resolutiontreemain">Code : <a href="https://github.com/chichonnade/MRI-Super-Resolution/tree/main">https://github.com/chichonnade/MRI-Super-Resolution/tree/main</a><a hidden class="anchor" aria-hidden="true" href="#code--httpsgithubcomchichonnademri-super-resolutiontreemain">#</a></h4>
-<h2 id="demo--low-resolution-15t-to-high-resolution-3t-mri">Demo : Low Resolution 1.5T to High Resolution 3T MRI<a hidden class="anchor" aria-hidden="true" href="#demo--low-resolution-15t-to-high-resolution-3t-mri">#</a></h2>
+<p>We compare two U-Net architectures &mdash; a full <strong>3D convolutional</strong> U-Net and a <strong>2.5D slice-conditioned</strong> U-Net &mdash; for brain MRI super-resolution using the Elucidated Diffusion Model (EDM) framework. Trained on just 59 subjects from the FOMO60K dataset, the 3D model achieves <strong>37.77 dB PSNR</strong> and <strong>0.996 SSIM</strong> on 2x super-resolution, surpassing pretrained EDSR and Swin2SR baselines by over 2 dB.</p>
+<h4 id="code-githubhttpsgithubcommagic-solutionsmri-super-resolution-nbspnbsp-weights-huggingfacehttpshuggingfacecochichonnadecomparative-analysis-3d-25d-mri-super-resolution-edm-nbspnbsp-dataset-fomo60k--nkihttpshuggingfacecodatasetsfomo-mrifomo60k">Code: <a href="https://github.com/Magic-Solutions/MRI-Super-Resolution">GitHub</a>  |  Weights: <a href="https://huggingface.co/Chichonnade/Comparative-Analysis-3D-2.5D-MRI-Super-Resolution-EDM">HuggingFace</a>  |  Dataset: <a href="https://huggingface.co/datasets/FOMO-MRI/FOMO60K">FOMO60K / NKI</a><a hidden class="anchor" aria-hidden="true" href="#code-githubhttpsgithubcommagic-solutionsmri-super-resolution-nbspnbsp-weights-huggingfacehttpshuggingfacecochichonnadecomparative-analysis-3d-25d-mri-super-resolution-edm-nbspnbsp-dataset-fomo60k--nkihttpshuggingfacecodatasetsfomo-mrifomo60k">#</a></h4>
+<h2 id="demo-low-resolution-to-high-resolution-mri">Demo: Low Resolution to High Resolution MRI<a hidden class="anchor" aria-hidden="true" href="#demo-low-resolution-to-high-resolution-mri">#</a></h2>
 <div style="text-align: center">
     
    <img src="assets/mri_slice_LR.gif" alt="Low Resolution MRI" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
    <img src="assets/mri_slice_HR.gif" alt="High Resolution MRI" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
 
 </div>
-<h2 id="overview">Overview<a hidden class="anchor" aria-hidden="true" href="#overview">#</a></h2>
-<p>Latest diffusion models have shown promising results in super-resolution tasks. This project aims to leverage these models to enhance the resolution of MRI images. It involves training a diffusion model on HR / LR MRI pairs to learn the noise distribution and generate high-resolution images from low-resolution inputs. Using a cascade of these models, we can achieve significant improvements in image quality.</p>
-<h2 id="forward-noise-process">Forward noise process<a hidden class="anchor" aria-hidden="true" href="#forward-noise-process">#</a></h2>
-<p><img src="assets/cosine_noise_scheduler.png" alt="High Resolution MRI" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
-Using a cosine noise schedule, we can gradually add noise to the input image, allowing the model to learn the noise distribution and generate high-resolution images. The noise variance is increased over 1000 steps with a maximum variance of 0.3 at the final step to prevent adding out-of-bound noise values.</p>
-<p>Here are the formulas used:</p>
-<ol>
-<li>
-<p><strong>Cosine Schedule for Alphas</strong>:
-</p>
-$$ \alpha_t = \cos^2\left(\frac{\pi t}{2T}\right) $$</li>
-<li>
-<p><strong>Cumulative Product of Alphas</strong>:
-</p>
-$$\bar{\alpha_{t}} = \prod_{i=1}^{t}\alpha_i$$</li>
-<li>
-<p><strong>Forward Noise Process</strong>:
-</p>
-$$ q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, 0.3(1 - \bar{\alpha}_t) I) $$</li>
-</ol>
-<p>\( x_t \) can be sampled as: </p>
-\[ x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{(1 - \bar{\alpha}_t)} \varepsilon_{t}, \text{ where } \varepsilon_{t} \sim \mathcal{N}(0, \mathbf{0.3I}) \]<p>Where:</p>
-<ul>
-<li>\( \alpha_t \) represents the amount of signal retained at time step \( t \).</li>
-<li>\( \bar{\alpha}_t \) is the cumulative product of the alpha values up to time step \( t \).</li>
-<li>\( x_t \) is the noisy image at step \( t \).</li>
-<li>\( x_0 \) is the original image.</li>
-<li>\( q(x_t \mid x_0) \) represents the probability distribution of the noisy image given the original image.</li>
-</ul>
-<h2 id="lrhr-pairs">LR/HR pairs<a hidden class="anchor" aria-hidden="true" href="#lrhr-pairs">#</a></h2>
-<p>We use the Human Connectome Project (HCP) dataset, which contains both 1.5T and 3T MRI scans. The LR images are generated by downsampling the HR images using the spline interpolation method. Then we train the diffusion model on these LR/HR pairs to learn the noise distribution and generate high-resolution images.</p>
-<h2 id="reverse-process-using-a-3d-unet">Reverse process using a 3D-Unet<a hidden class="anchor" aria-hidden="true" href="#reverse-process-using-a-3d-unet">#</a></h2>
+<h2 id="methods">Methods<a hidden class="anchor" aria-hidden="true" href="#methods">#</a></h2>
+<p>We adopt the EDM framework (Karras et al., NeurIPS 2022), which parameterizes diffusion using a continuous noise level \( \sigma \) rather than discrete timesteps. The noisy observation is:</p>
+$$ \mathbf{x}\_\sigma = \mathbf{x}\_\text{HR} + \sigma \cdot \boldsymbol{\epsilon}, \quad \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) $$<p>The denoiser \( D_\theta \) is preconditioned as:</p>
+$$ D\_\theta(\mathbf{x}\_\sigma, \sigma) = c\_\text{skip}\,\mathbf{x}\_\sigma + c\_\text{out}\,F\_\theta\!\bigl(c\_\text{in}\,\mathbf{x}\_\sigma,\; c\_\text{noise},\; \mathbf{x}\_\text{LR}\bigr) $$<p>where \( F_\theta \) is the U-Net backbone and the scaling functions \( c_\text{in}, c_\text{skip}, c_\text{out}, c_\text{noise} \) depend on \( \sigma \) and a data standard deviation \( \sigma_\text{data} \). During training, \( \sigma \) is sampled from a log-normal distribution. The model is trained to minimize:</p>
+$$ \mathcal{L} = \mathbb{E}\_{\sigma,\, \mathbf{x}\_\text{HR},\, \boldsymbol{\epsilon}} \bigl[\|D\_\theta(\mathbf{x}\_\sigma, \sigma) - \mathbf{x}\_\text{HR}\|^2\bigr] $$<h2 id="architecture">Architecture<a hidden class="anchor" aria-hidden="true" href="#architecture">#</a></h2>
 <div style="text-align: center">
     
-   <img src="assets/3DUnetSuperRes.png" alt="Low Resolution MRI" width="600" style="display: block; margin-left: auto; margin-right: auto;" />
+   <img src="assets/fig_method_overview.png" alt="Method overview: 2.5D and 3D pipelines" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
 
 </div>
-<p>Our model is based on the original DDPM architecture with 3D convolutions to handle the 3D MRI data. The model consists of a series of diffusion steps, each with a series of 3D convolutions, normalization layers, and attention blocks.</p>
-<ol>
-<li>
-<p><strong>Reverse Noise Schedule for Betas</strong>:
-</p>
-$$ \beta_t = \frac{1 - \alpha_{t+1}}{1 - \bar{\alpha}_{t+1}} $$</li>
-<li>
-<p><strong>Variance of the Reverse Process</strong>:
-</p>
-$$ \sigma_t^2 = \frac{1 - \bar{\alpha}_t}{1 - \bar{\alpha}_{t+1}} \beta_t $$</li>
-<li>
-<p><strong>Reverse Process Sampling</strong>:
-</p>
-$$ p(x_{t-1} \mid x_t, x_0) = \mathcal{N}(x_{t-1}; \mu_t(x_t, x_0), \sigma_t^2 I) $$</li>
-<li>
-<p><strong>Mean of the Reverse Process</strong>:
-</p>
-$$ \mu_t(x_t, x_0) = \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t} x_0 + \frac{\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t} x_t $$</li>
-</ol>
-<p>Where:</p>
-<ul>
-<li>\( \beta_t \) represents the noise variance for the reverse process at time step \( t \).</li>
-<li>\( \sigma_t^2 \) is the variance of the reverse process, which determines how much noise is reduced at each reverse step.</li>
-<li>\( x_t \) is the noisy image at step \( t \).</li>
-<li>\( x_{t-1} \) is the denoised image at the previous step \( t-1 \).</li>
-<li>\( \mu_t(x_t, x_0) \) is the mean of the reverse process, guiding the denoising from \( x_t \) to \( x_{t-1} \).</li>
-<li>\( p(x_{t-1} \mid x_t, x_0) \) represents the probability distribution of the denoised image at step \( t-1 \) given the noisy image at step \( t \) and the original image \( x_0 \).</li>
-</ul>
-<h2 id="updates">Updates<a hidden class="anchor" aria-hidden="true" href="#updates">#</a></h2>
-<p>Currently assessing the performance of two reverse process models. A 3D-Unet for best performance and a combination of 3 2D-Unets to reduce training cost.</p>
+<h3 id="3d-convolutional-u-net">3D Convolutional U-Net<a hidden class="anchor" aria-hidden="true" href="#3d-convolutional-u-net">#</a></h3>
+<p>The 3D model operates on volumetric patches of shape \( (B, C, D, H, W) \). It uses a 4-level encoder-decoder with channel dimensions [32, 64, 128, 256], 3D convolutions (3x3x3), adaptive group normalization conditioned on \( c_\text{noise} \), and multi-head self-attention with flash attention at the deepest level. The LR volume is trilinearly upsampled and concatenated with the noisy HR target. Inference uses a <strong>20-step Euler sampler</strong> with sliding-window overlap blending. <strong>50.7M parameters.</strong></p>
+<h3 id="25d-slice-conditioned-u-net">2.5D Slice-Conditioned U-Net<a hidden class="anchor" aria-hidden="true" href="#25d-slice-conditioned-u-net">#</a></h3>
+<p>The 2.5D model decomposes volumetric SR into per-slice 2D tasks with inter-slice conditioning. For each target slice, it receives: (1) one adjacent LR slice (bicubic-upsampled), (2) the target LR slice (upsampled), and (3) the noisy HR target &mdash; concatenated along channels. The 2D U-Net has channel dimensions [64, 64, 128, 256] with self-attention at the deepest level. Inference uses a <strong>single-step Heun sampler</strong> (0.09 s/slice on Apple MPS). <strong>51.1M parameters.</strong></p>
+<h3 id="training">Training<a hidden class="anchor" aria-hidden="true" href="#training">#</a></h3>
+<p>Both models are trained with AdamW (lr = 1e-4) for 10 epochs on a single NVIDIA L4 GPU (22 GB). The codebase adapts the DIAMOND framework (Alonso et al., NeurIPS 2024) for MRI super-resolution.</p>
+<h2 id="dataset">Dataset<a hidden class="anchor" aria-hidden="true" href="#dataset">#</a></h2>
+<p>We use the <strong>NKI (Nathan Kline Institute) cohort</strong> from the FOMO60K dataset, which provides T1-weighted structural brain MRI volumes at approximately 1 mm isotropic resolution. Volumes are intensity-normalized to [0, 255] using the 1st&ndash;99th percentile range, then sliced along the sagittal axis. Each slice is downsampled by a factor of 2 using block averaging to produce the LR input (128x128), with the corresponding HR slice (256x256) as ground truth.</p>
+<p><strong>Train/test split:</strong> 59 subjects (100 sessions) for training; 5 subjects (6 sessions, 993 slices) held out for testing. The split is at the subject level to prevent data leakage.</p>
+<h2 id="results">Results<a hidden class="anchor" aria-hidden="true" href="#results">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>PSNR (dB) ↑</th>
+<th>SSIM ↑</th>
+<th>LPIPS ↓</th>
+<th>Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bicubic interpolation</td>
+<td>33.89</td>
+<td>0.957</td>
+<td>0.091</td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td>EDSR (DIV2K pretrained)</td>
+<td>35.57</td>
+<td>0.977</td>
+<td><strong>0.024</strong></td>
+<td>1.4M</td>
+</tr>
+<tr>
+<td>Swin2SR (DIV2K pretrained)</td>
+<td>35.50</td>
+<td>0.978</td>
+<td><strong>0.024</strong></td>
+<td>1.0M</td>
+</tr>
+<tr>
+<td>2.5D EDM (ours, 10 ep)</td>
+<td>35.82</td>
+<td>0.971</td>
+<td>0.040</td>
+<td>51.1M</td>
+</tr>
+<tr>
+<td><strong>3D EDM (ours, 10 ep)</strong></td>
+<td><strong>37.77</strong></td>
+<td><strong>0.996</strong></td>
+<td>0.029</td>
+<td>50.7M</td>
+</tr>
+</tbody>
+</table>
+<p>All methods evaluated on identical test data and degradation pipeline. EDSR and Swin2SR use pretrained DIV2K weights without MRI fine-tuning.</p>
+<h3 id="psnr-and-ssim-comparison">PSNR and SSIM Comparison<a hidden class="anchor" aria-hidden="true" href="#psnr-and-ssim-comparison">#</a></h3>
+<img src="assets/fig_psnr_ssim_bars.png" alt="PSNR and SSIM bar chart" width="700" style="display: block; margin-left: auto; margin-right: auto;" />
+<h3 id="visual-comparison-3d-model">Visual Comparison (3D Model)<a hidden class="anchor" aria-hidden="true" href="#visual-comparison-3d-model">#</a></h3>
+<p>Ground truth HR, model prediction, and trilinear baseline across sagittal, axial, and coronal views:</p>
+<img src="assets/fig_visual_comparison_3d.png" alt="3D model visual comparison" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<h3 id="visual-comparison-25d-model">Visual Comparison (2.5D Model)<a hidden class="anchor" aria-hidden="true" href="#visual-comparison-25d-model">#</a></h3>
+<img src="assets/fig_visual_comparison_25d.png" alt="2.5D model visual comparison" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<h3 id="per-subject-psnr">Per-Subject PSNR<a hidden class="anchor" aria-hidden="true" href="#per-subject-psnr">#</a></h3>
+<img src="assets/fig_per_subject_psnr.png" alt="Per-subject PSNR comparison" width="700" style="display: block; margin-left: auto; margin-right: auto;" />
+<h3 id="per-pixel-error-heatmap">Per-Pixel Error Heatmap<a hidden class="anchor" aria-hidden="true" href="#per-pixel-error-heatmap">#</a></h3>
+<p>Per-pixel absolute error for a mid-sagittal slice comparing bicubic, trilinear, and 2.5D EDM reconstructions against ground truth:</p>
+<img src="assets/fig_pixel_error_heatmap.png" alt="Per-pixel error heatmap" width="900" style="display: block; margin-left: auto; margin-right: auto;" />
+<h3 id="per-slice-psnr">Per-Slice PSNR<a hidden class="anchor" aria-hidden="true" href="#per-slice-psnr">#</a></h3>
+<p>PSNR across the sagittal axis for one test subject. Higher PSNR near volume edges where slices contain less complex anatomy; lower in central slices with denser cortical detail:</p>
+<img src="assets/fig_per_slice_psnr.png" alt="Per-slice PSNR curve" width="700" style="display: block; margin-left: auto; margin-right: auto;" />
 <p><br><br>
 <span style="color: grey;"> Credits:</span> <br>
-<span style="color: grey;">This project was conducted in collaboration with <a href="https://www.genci.fr/en">GENCI</a> who provided the computational ressources. Authored by Hendrik Chiche, Ludovic Corcos and Logan Rouge.
+<span style="color: grey;">This project was conducted in collaboration with <a href="https://www.genci.fr/en">GENCI</a> who provided the computational resources. Authored by Hendrik Chiche, Ludovic Corcos and Logan Rouge.
 </span></p>
 <img src="assets/genci.png" alt="" width="300" style="display: block; margin-left: auto; margin-right: auto;" />
 
@@ -210,7 +294,7 @@ $$ \mu_t(x_t, x_0) = \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Hendrik&#39;s Portfolio</a></span> · 
+        <span>&copy; 2026 <a href="https://chichonnade.github.io/">Hendrik&#39;s Portfolio</a></span> · 
 
     <span>
         Powered by
