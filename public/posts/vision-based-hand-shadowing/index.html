@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics | Hendrik&#39;s Portfolio</title>
+<meta name="keywords" content="">
+<meta name="description" content="Teleoperation of low-cost robotic manipulators remains challenging due to the complexity of mapping human hand articulations to robot joint commands. We present a system that enables robot teleoperation from a single egocentric RGB-D camera mounted on 3D-printed glasses. The pipeline detects 21 hand landmarks per hand using MediaPipe Hands, deprojects them into 3D via depth sensing, transforms them into the robot coordinate frame, and solves a damped-least-squares inverse kinematics problem in PyBullet to produce joint commands for the 6-DOF SO-ARM101 robot.">
+<meta name="author" content="">
+<link rel="canonical" href="https://chichonnade.github.io/posts/vision-based-hand-shadowing/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.e519eab4771929a9ba36f76a121cc09c818d15e04c793ceb606ca68ec45114cf.css" integrity="sha256-5RnqtHcZKam6NvdqEhzAnIGNFeBMeTzrYGymjsRRFM8=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://chichonnade.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://chichonnade.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://chichonnade.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://chichonnade.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://chichonnade.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://chichonnade.github.io/posts/vision-based-hand-shadowing/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics" />
+<meta property="og:description" content="Teleoperation of low-cost robotic manipulators remains challenging due to the complexity of mapping human hand articulations to robot joint commands. We present a system that enables robot teleoperation from a single egocentric RGB-D camera mounted on 3D-printed glasses. The pipeline detects 21 hand landmarks per hand using MediaPipe Hands, deprojects them into 3D via depth sensing, transforms them into the robot coordinate frame, and solves a damped-least-squares inverse kinematics problem in PyBullet to produce joint commands for the 6-DOF SO-ARM101 robot." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://chichonnade.github.io/posts/vision-based-hand-shadowing/" />
+<meta property="og:image" content="https://chichonnade.github.io/assets/robot_shadowing_human_inrealtime.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2026-03-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2026-03-03T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://chichonnade.github.io/assets/robot_shadowing_human_inrealtime.png" />
+<meta name="twitter:title" content="Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics"/>
+<meta name="twitter:description" content="Teleoperation of low-cost robotic manipulators remains challenging due to the complexity of mapping human hand articulations to robot joint commands. We present a system that enables robot teleoperation from a single egocentric RGB-D camera mounted on 3D-printed glasses. The pipeline detects 21 hand landmarks per hand using MediaPipe Hands, deprojects them into 3D via depth sensing, transforms them into the robot coordinate frame, and solves a damped-least-squares inverse kinematics problem in PyBullet to produce joint commands for the 6-DOF SO-ARM101 robot."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://chichonnade.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics",
+      "item": "https://chichonnade.github.io/posts/vision-based-hand-shadowing/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics",
+  "name": "Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics",
+  "description": "Teleoperation of low-cost robotic manipulators remains challenging due to the complexity of mapping human hand articulations to robot joint commands. We present a system that enables robot teleoperation from a single egocentric RGB-D camera mounted on 3D-printed glasses. The pipeline detects 21 hand landmarks per hand using MediaPipe Hands, deprojects them into 3D via depth sensing, transforms them into the robot coordinate frame, and solves a damped-least-squares inverse kinematics problem in PyBullet to produce joint commands for the 6-DOF SO-ARM101 robot.",
+  "keywords": [
+    
+  ],
+  "articleBody": " Teleoperation of low-cost robotic manipulators remains challenging due to the complexity of mapping human hand articulations to robot joint commands. We present a system that enables robot teleoperation from a single egocentric RGB-D camera mounted on 3D-printed glasses. The pipeline detects 21 hand landmarks per hand using MediaPipe Hands, deprojects them into 3D via depth sensing, transforms them into the robot coordinate frame, and solves a damped-least-squares inverse kinematics problem in PyBullet to produce joint commands for the 6-DOF SO-ARM101 robot. A gripper controller maps thumb–index finger geometry to grasp aperture with a four-level fallback hierarchy. Actions are first previewed in a physics simulation before deployment on the physical robot through the LeRobot framework. We evaluate the IK retargeting pipeline on a structured pick-and-place benchmark (5-tile grid, 10 grasps per tile) achieving a 90% success rate, and compare it against four vision-language-action policies (ACT, SmolVLA, \\(\\pi_{0.5}\\), GR00T N1.5) trained on leader–follower teleoperation data.\nDemo: YouTube | Code: GitHub | Models \u0026 Data: HuggingFace Introduction Teaching robots to manipulate objects the way humans do is a central goal of robotics research. Two dominant paradigms have emerged: teleoperation, where a human operator directly controls the robot in real time, and imitation learning, where a policy is trained from recorded demonstrations (Zhao et al., 2023; Cadena et al., 2025). Teleoperation provides immediate, interpretable control but traditionally requires expensive hardware such as exoskeletons, leader–follower arm pairs, or VR headsets (Cheng et al., 2025; Ding et al., 2024). Imitation learning can reduce the demonstration burden but demands careful data collection, GPU-based training, and policy evaluation.\nThis work studies how an analytical inverse-kinematics pipeline can bridge these paradigms: providing a marker-free teleoperation interface from a first-person RGB-D camera that simultaneously generates training data compatible with imitation-learning frameworks.\nOur contributions are:\nAn end-to-end pipeline from egocentric RGB-D video to single-arm robot control via analytical inverse kinematics. A sim-to-real transfer workflow using PyBullet for trajectory preview and validation before physical deployment on the SO-ARM101 robot. A quantitative comparison of IK retargeting (90% success, zero training) with four VLA policies trained on teleoperation data on a structured pick-and-place benchmark. An in-the-wild evaluation in grocery store and pharmacy environments, identifying hand occlusion as the primary failure mode in unstructured scenes. Related Work Hand Pose Estimation Real-time hand tracking has advanced rapidly. MediaPipe Hands (Zhang et al., 2020) runs on-device at 30 Hz using a two-stage BlazePalm + landmark pipeline predicting 21 keypoints, and requires no GPU. We adopt MediaPipe for its CPU efficiency and cross-platform availability. WiLoR (Potamias et al., 2024) improves accuracy with a DarkNet localiser followed by a ViT-based 3D reconstructor, achieving state-of-the-art results on FreiHAND and HO3D benchmarks at over 130 FPS but requires GPU inference. Both systems output 21 keypoints compatible with the MANO hand model topology (Romero et al., 2017).\nTeleoperation Systems Open-TeleVision (Cheng et al., 2025) provides stereoscopic VR-based teleoperation for humanoid robots. Bunny-VisionPro (Ding et al., 2024) uses Apple Vision Pro for bimanual dexterous control with haptic feedback. These systems achieve high fidelity but require specialised VR hardware. Our approach uses only an RGB-D depth camera and 3D-printed accessories.\nImitation Learning ACT (Zhao et al., 2023) introduced action chunking with transformers for fine-grained bimanual manipulation, achieving 80–90% success with 10 minutes of demonstrations. SmolVLA (Cadena et al., 2025) is a 450M-parameter vision-language-action model trainable on a single GPU. \\(\\pi_0\\) (Black et al., 2024) is a generalist robot foundation model using flow matching over a VLM backbone, trained across 7 robot embodiments and 68 tasks.\nLow-Cost Robotics The SO-ARM100/101 is a 6-DOF arm using STS3215 bus servos with 30 kg·cm torque. LeRobot provides a hardware-agnostic Python framework that standardises data collection, training, and deployment across robot platforms.\nPhysics Simulation PyBullet (Coumans \u0026 Bai, 2016–2021) provides real-time rigid body dynamics with built-in inverse kinematics via the Bullet Physics SDK. It supports URDF loading, position/velocity/torque control, and GPU-accelerated rendering, making it suitable for rapid prototyping and sim-to-real transfer.\nSystem Overview The system converts egocentric hand observations into robot commands through a multi-stage transformation pipeline. It requires an Intel RealSense D400 camera mounted on 3D-printed glasses and a single SO-ARM101 follower arm. Each pipeline stage is implemented as a Transformation[InT, OutT] subclass that wraps a _transform method with automatic latency tracking.\n# Stage Input Output 1 Camera Input None CameraFrame 2 Hand Detection CameraFrame ImageSpace 3 Depth Deprojection (ImageSpace, CameraFrame) CameraSpace 4 Coord. Transform CameraSpace RobotSpace 5 IK + Gripper RobotSpace ControlCmds 6 Sim / Robot ControlCmds — Hardware The egocentric sensor platform consists of an Intel RealSense D400-series stereo depth camera mounted on 3D-printed glasses using three PLA/ABS parts (frame, two temple branches, and a camera mount bracket), secured with M1.5, M2, and M3 screws. The camera connects via USB-C 3.1 Gen 1 and streams synchronised RGB and depth at 640×480 resolution and 30 FPS. The robot platform uses a single SO-ARM101 follower arm with 6 revolute joints (5 arm + 1 gripper) driven by STS3215 Feetech bus servos.\nLab bench setup. The SO-ARM101 robot arm is mounted on a wooden base with the Intel RealSense D400 camera on a stand above, oriented in the same egocentric direction as the glasses-mounted camera.\nMethods RGB-D Capture and Camera Model The RealSense camera provides aligned RGB-D frames via the pyrealsense2 SDK. We model the camera using the pinhole projection:\n$$ \\begin{bmatrix} u \\\\\\\\ v \\end{bmatrix} = \\begin{bmatrix} f\\_x \u0026 0 \u0026 c\\_x \\\\\\\\ 0 \u0026 f\\_y \u0026 c\\_y \\end{bmatrix} \\begin{bmatrix} X/Z \\\\\\\\ Y/Z \\\\\\\\ 1 \\end{bmatrix} $$where \\((f_x, f_y)\\) are focal lengths and \\((c_x, c_y)\\) is the principal point, all extracted automatically from the camera stream at initialisation.\nHand Pose Estimation We use MediaPipe Hands for 2D hand detection and landmark localisation. MediaPipe’s two-stage architecture—a BlazePalm detector that locates hands via oriented bounding boxes, followed by a lightweight landmark regression network—predicts 21 keypoints per hand in real time on CPU. The detector outputs left/right hand classification and 2D keypoint coordinates \\(\\{(u_i, v_i)\\}_{i=0}^{20}\\) covering the wrist, thumb, index, middle, ring, and pinky finger joints.\nTo reduce temporal jitter, we apply exponential moving average (EMA) smoothing to the 2D landmarks:\n$$ \\hat{p}\\_t = \\alpha \\, p\\_t + (1 - \\alpha) \\, \\hat{p}\\_{t-1}, \\quad \\alpha = 0.8 $$where \\(p_t\\) is the raw detection and \\(\\hat{p}_t\\) is the smoothed estimate.\nDepth-Based 3D Reconstruction Each 2D landmark \\((u_i, v_i)\\) is deprojected to 3D camera coordinates using the depth image \\(D\\) and camera intrinsics:\n$$ \\begin{bmatrix} X \\\\\\\\ Y \\\\\\\\ Z \\end{bmatrix} = \\frac{D[v\\_i, u\\_i]}{s} \\begin{bmatrix} (u\\_i - c\\_x) / f\\_x \\\\\\\\ (v\\_i - c\\_y) / f\\_y \\\\\\\\ 1 \\end{bmatrix} $$where \\(s = 1000\\) is the depth scale (millimetres to metres). Depth values are validated against the range \\([d_{\\min}, d_{\\max}] = [0.1, 5.0]\\) m; landmarks with out-of-range depth are marked invalid.\nA depth fallback mechanism handles the critical case where one of the two gripper-defining landmarks (THUMB_MCP or INDEX_FINGER_MCP) has invalid depth but the other does not. In this case, the valid landmark’s depth is substituted for the failed one, since these adjacent landmarks are typically at similar depths. A hand pose is rejected entirely if fewer than 50% of its 21 landmarks have valid depth.\nCamera-to-Robot Coordinate Transform Landmarks in camera coordinates \\(\\mathbf{p}\\_{\\text{cam}}\\) are transformed to the robot base frame \\(\\mathbf{p}\\_{\\text{rob}}\\) by a rigid-body transformation composed of a camera-to-robot transform and an optional URDF offset:\n$$ \\mathbf{p}\\_{\\text{rob}} = \\mathbf{R}\\_{\\text{final}} \\, \\mathbf{p}\\_{\\text{cam}} + \\mathbf{t}\\_{\\text{final}} $$where\n$$ \\mathbf{R}\\_{\\text{final}} = \\mathbf{R}\\_{\\text{urdf}} \\cdot \\mathbf{R}\\_{\\text{cam}}, \\quad \\mathbf{t}\\_{\\text{final}} = \\mathbf{R}\\_{\\text{urdf}} \\cdot \\mathbf{t}\\_{\\text{cam}} + \\mathbf{t}\\_{\\text{urdf}} $$The camera rotation matrix \\(\\mathbf{R}\\_{\\text{cam}}\\) accounts for the camera mounting angle \\(\\theta = 50°\\):\n$$ \\mathbf{R}\\_{\\text{cam}} = \\begin{bmatrix} -1 \u0026 0 \u0026 0 \\\\\\\\ 0 \u0026 \\sin\\theta \u0026 -\\cos\\theta \\\\\\\\ 0 \u0026 -\\cos\\theta \u0026 -\\sin\\theta \\end{bmatrix} $$with translation \\(\\mathbf{t}\\_{\\text{cam}} = (0.04, -0.049, 0.48)^\\top\\) metres. These parameters are extracted directly from the SolidWorks CAD assembly that models both the robot and the camera mount bracket at their exact physical positions. The x-axis negation mirrors the image horizontally (the camera observes hands from a first-person perspective, while the robot faces the operator), and the rotation about the x-axis maps the downward camera view to the robot’s forward–up coordinate system.\nTarget Pose Computation The robot end-effector target position is the midpoint of the two gripper-defining hand landmarks:\n$$ \\mathbf{p}\\_{\\text{target}} = \\frac{1}{2} \\bigl(\\mathbf{p}\\_{\\text{THUMB\\\\_MCP}} + \\mathbf{p}\\_{\\text{INDEX\\\\_MCP}}\\bigr) $$The target orientation is constructed as a rotation matrix from three orthogonal axes derived from hand geometry:\n$$ \\mathbf{e}\\_1 = \\frac{\\mathbf{p}\\_{\\text{INDEX\\\\_MCP}} - \\mathbf{p}\\_{\\text{THUMB\\\\_MCP}}} {\\|\\mathbf{p}\\_{\\text{INDEX\\\\_MCP}} - \\mathbf{p}\\_{\\text{THUMB\\\\_MCP}}\\|} $$$$ \\mathbf{d} = \\frac{1}{2}\\bigl( (\\mathbf{p}\\_{\\text{THUMB\\\\_TIP}} - \\mathbf{p}\\_{\\text{THUMB\\\\_MCP}}) + (\\mathbf{p}\\_{\\text{INDEX\\\\_TIP}} - \\mathbf{p}\\_{\\text{INDEX\\\\_MCP}}) \\bigr) $$$$ \\mathbf{e}\\_3 = \\frac{\\mathbf{e}\\_1 \\times \\hat{\\mathbf{d}}} {\\|\\mathbf{e}\\_1 \\times \\hat{\\mathbf{d}}\\|}, \\quad \\mathbf{e}\\_2 = \\mathbf{e}\\_3 \\times \\mathbf{e}\\_1 $$The resulting rotation matrix \\(\\mathbf{R} = [\\mathbf{e}_1 \\;\\; \\mathbf{e}_2 \\;\\; \\mathbf{e}_3]\\) is converted to a quaternion via scipy.spatial.transform for the IK solver.\nWhen fingertip landmarks are unavailable (due to occlusion or depth failure), a fallback orientation is computed using only THUMB_MCP, INDEX_FINGER_MCP, and WRIST, replacing the average finger direction \\(\\mathbf{d}\\) with the wrist-to-gripper vector.\nInverse Kinematics Given the target position \\(\\mathbf{p}\\_{\\text{target}}\\) and orientation quaternion \\(\\mathbf{q}\\_{\\text{target}}\\), we solve for joint angles \\(\\boldsymbol{\\theta} = (\\theta_1, \\ldots, \\theta_5)\\) of the 5-DOF arm using PyBullet’s calculateInverseKinematics:\n$$ \\boldsymbol{\\theta}^* = \\arg\\min\\_{\\boldsymbol{\\theta}} \\bigl\\| \\text{FK}(\\boldsymbol{\\theta}) - (\\mathbf{p}\\_{\\text{target}}, \\mathbf{q}\\_{\\text{target}}) \\bigr\\|^2 + \\lambda \\|\\boldsymbol{\\theta} - \\boldsymbol{\\theta}\\_{\\text{rest}}\\|^2 $$where \\(\\text{FK}(\\cdot)\\) is the forward kinematics function, \\(\\boldsymbol{\\theta}\\_{\\text{rest}}\\) is the current joint state (used as the rest pose), and \\(\\lambda\\) captures per-joint damping extracted from the URDF (clamped to \\(\\geq 0.001\\) to prevent solver instability). The solver runs up to 100 iterations with a residual threshold of \\(10^{-4}\\).\nEMA smoothing (\\(\\alpha = 0.5\\)) is applied to the IK solution to suppress temporal jitter:\n$$ \\hat{\\boldsymbol{\\theta}}\\_t = 0.5 \\, \\boldsymbol{\\theta}^*\\_t + 0.5 \\, \\hat{\\boldsymbol{\\theta}}\\_{t-1} $$A safety check rejects any target with \\(z \u003c 0.05\\) m to prevent ground-plane collisions.\nGripper Control The gripper angle \\(\\phi\\) is computed from the angular separation between vectors from the gripper base (target position) to the thumb and index finger:\n$$ \\phi = \\arccos\\!\\left( \\frac{(\\mathbf{p}\\_{\\text{thumb}} - \\mathbf{p}\\_{\\text{target}}) \\cdot (\\mathbf{p}\\_{\\text{index}} - \\mathbf{p}\\_{\\text{target}})} {\\|\\mathbf{p}\\_{\\text{thumb}} - \\mathbf{p}\\_{\\text{target}}\\| \\; \\|\\mathbf{p}\\_{\\text{index}} - \\mathbf{p}\\_{\\text{target}}\\|} \\right) $$clamped to the acute range \\([0, \\pi/2]\\) and then to the gripper joint limits \\([\\phi_{\\min}, \\phi_{\\max}] = [0.087, 1.658]\\) rad after applying an offset of \\(-0.175\\) rad for tighter grip calibration.\nA four-level fallback hierarchy ensures robust gripper control:\nUse THUMB_TIP and INDEX_FINGER_TIP (primary). Use THUMB_IP and INDEX_FINGER_DIP (knuckle fallback). Use the last valid gripper angle (temporal persistence). Use the mid-open default \\((\\phi_{\\min}+\\phi_{\\max})/2\\). Simulation Preview Before deploying on the physical robot, all IK-generated trajectories are previewed in a PyBullet simulation environment. The simulation loads the SO-ARM101 URDF with 7 joints per arm (1 fixed base + 5 revolute arm + 1 revolute gripper); only the right arm is used in our experiments. The simulation runs at 240 Hz with gravity \\(g = 9.81\\) m/s². Joint commands are executed via position control with uniform force limits of 6.0 N, position gains of 0.2, and velocity gains of 1.0.\nPyBullet simulation preview. Top-left: RGB frame from the egocentric camera showing the operator’s hand. Top-right: depth colour map. Bottom: robot arm in PyBullet with debug joint labels and IK target markers (green/red spheres), tracking the hand-derived trajectory.\nThis three-panel view allows the operator to verify that the computed joint trajectories faithfully reproduce the intended hand motion before committing to physical execution. Beyond trajectory verification, the simulation also exports demonstration data (.npy action files) that can be used to train imitation-learning policies.\nPhysical Deployment Validated actions are deployed on the physical SO-ARM101 via the LeRobot framework. Joint angles from the IK solver (in radians) are normalised to \\([0, 1]\\) using the joint range limits and converted to motor commands:\n$$ a\\_{\\text{motor}} = \\begin{cases} (a\\_{\\text{norm}} - 0.5) \\times 200 \u0026 \\text{arm joints} \\\\\\\\ a\\_{\\text{norm}} \\times 100 \u0026 \\text{gripper joint} \\end{cases} $$Servo PID coefficients are configured for smooth motion, and acceleration/velocity limits prevent abrupt movements. Three gripper modes are supported: Normal (raw angle pass-through), Binary (threshold at 60°; outputs fully open or closed), and Offset (adds a configurable offset for tighter grasps).\nHand shadowing. Left: the operator wearing the RealSense glasses performs a grasp. Right: the SO-ARM101 robot mirrors the hand pose through the IK pipeline.\nExperimental Setup Hardware and Software Camera: Intel RealSense D400, 640×480 RGB+D at 30 FPS Robot: Single SO-ARM101 follower arm (STS3215 servos, 30 kg·cm torque) Glasses: Custom 3D-printed PLA mount (3 parts: frame, 2× branch, mount bracket) Compute: Apple M-series or x86 laptop (MediaPipe runs on CPU; PyBullet IK requires no GPU) Software: Python 3.10, PyBullet ≥3.2.5, MediaPipe ≥0.10, LeRobot ≥0.4.1, OpenCV ≥4.8 SO-ARM101 Joint Angle Ranges (Radians) Joint Min Max Range (°) Shoulder pan −1.920 +1.920 220.0 Shoulder lift −1.745 +1.745 200.0 Elbow flex −1.745 +1.571 190.0 Wrist flex −1.658 +1.658 190.0 Wrist roll −2.793 +2.793 320.0 Gripper −0.175 +1.745 110.0 Physical Robot Servo Parameters Parameter Value P coefficient 12 I coefficient 0 D coefficient 24 Arm acceleration limit 50 / 254 Gripper acceleration limit 100 / 254 Arm velocity limit 1500 RPM Gripper velocity limit 3000 RPM Task and Protocol The benchmark task is: “Grab the purple cube and drop it in the box.” The cube is a soft foam block (5×5×5 cm) placed on a 3×3 tile grid (tiles #1–#9), with a 25×25 cm cardboard box positioned to the left of the grid.\nPick-and-place benchmark task. The SO-ARM101 robot grasps the purple cube and places it in the box. The tile grid (#1–#9) is marked with orange tape; the box sits to the left. The RealSense camera is visible on the stand above.\nFor the IK pipeline, the operator wears the glasses and performs the task naturally. The system records 30 FPS RGB-D to a .bag file, processes it offline to extract joint-angle actions, previews the trajectory in PyBullet, and then deploys on the physical robot.\nWe initially planned 5 grasps per tile across all 9 tiles (5×9 = 45 episodes). However, preliminary trials revealed two distinct failure patterns:\nIK pipeline: tiles #6–#9 (closer to the robot base) require the operator to reach downward and behind, changing the hand orientation relative to the egocentric camera such that the thumb and index finger become partially self-occluded, preventing reliable gripper-angle computation. VLA policies: the robot’s own gripper occluded the cube from its wrist-mounted camera at certain grid positions. We therefore restricted the experiment to tiles #1–#5 with 10 grasps per tile, yielding 10×5 = 50 episodes per approach.\nVLA Policy Training For the imitation-learning comparison, 50 demonstration episodes (×40 s each, tiles #1–#5) are collected via leader–follower teleoperation using a second SO-ARM101 as the leader arm (standard LeRobot teleoperation setup) with the same RealSense camera recording RGB and depth at 640×480, 30 FPS. The demonstration data includes synchronised RGB, depth, and joint-angle recordings, uploaded to the Hugging Face Hub in LeRobot dataset format.\nFour policies are fine-tuned on Google Colab (T4 GPU, 16 GB):\nACT (Zhao et al., 2023): batch size 4–6, 50k steps. Learns a generative model over action chunks conditioned on image and proprioceptive observations. SmolVLA (Cadena et al., 2025): batch size 64, 20k steps. A 450M-parameter vision-language-action model. \\(\\pi_{0.5}\\) (Black et al., 2024): batch size 32, 3k steps, bfloat16. Fine-tuned from a pretrained VLM backbone. GR00T N1.5: batch size 32, 3k steps. A cross-embodiment foundation model. Results and Discussion Pipeline Latency The three dominant stages are MediaPipe hand detection (23 ms), RGB/depth frame overlay and visualisation (110 ms), and PyBullet inverse kinematics solving (80 ms). The total per-frame processing time is 23 + 110 + 80 = 213 ms, yielding an effective throughput of ~5 FPS. The pipeline therefore does not operate in real time at the camera’s native 30 FPS: frames are recorded to a .bag file at 30 FPS, then processed offline at ~5 FPS to produce joint-angle trajectories, which are subsequently replayed on the robot at the target frame rate.\nPer-stage latency breakdown. The RGB/depth frame overlay (110 ms) and PyBullet IK solver (80 ms) dominate, yielding a total of 213 ms per frame (~5 FPS). Processing is performed offline on recorded .bag files.\nPick-and-Place Success Rates The IK retargeting pipeline achieves a 90% success rate (45/50) with zero training, since it analytically maps every operator hand motion to the robot. Its failures stem exclusively from thumb/index landmark detection issues at certain hand orientations, which prevent the gripper angle from being computed (the four-level fallback hierarchy recovers in most but not all cases).\nApproach Training Steps Inference Hz Success Rate IK Retargeting (ours) — ~5 (offline) 90% ACT 50k ~10 92% SmolVLA 20k ~10 50% \\(\\pi_{0.5}\\) 3k ~10 40% GR00T N1.5 3k ~10 35% IK retargeting per-tile success (out of 10 grasps each). Tiles #1–#2 (farthest from robot, natural hand pose) achieve perfect scores. Performance degrades toward tile #5 (closest to robot base) where the operator’s hand orientation causes partial thumb/index self-occlusion from the egocentric camera. Total: 45/50 = 90%.\nThe four VLA policies are trained on 50 leader–follower teleoperation episodes and evaluated on the same tile set. ACT achieves a 92% success rate—slightly exceeding the IK pipeline. This is expected: teleoperated demonstrations are recorded directly from physically successful grasps (the leader arm moves the follower through the correct trajectory), so the training data contains no perception failures. In contrast, the IK pipeline must reconstruct the trajectory from vision at every frame and can fail whenever hand landmarks are poorly detected. ACT benefits from 50k training steps on these clean demonstrations, effectively memorising the structured task.\nSmolVLA reaches 50%, competitive given its language-conditioning capability but limited by the small number of training episodes. \\(\\pi_{0.5}\\) achieves 40%, limited by its short fine-tuning (3k steps) from the generalist pretrained checkpoint. GR00T N1.5 reaches 35%, consistent with the challenge of adapting a cross-embodiment foundation model to a specific low-cost arm.\nA shared failure mode across SmolVLA, \\(\\pi_{0.5}\\), and GR00T N1.5 is self-occlusion: the robot’s gripper hides the cube from its own wrist-mounted camera during the approach phase, effectively preventing the vision model from learning a reliable grasp prior. ACT’s action-chunking approach partially sidesteps this by committing to multi-step action sequences that carry through the occluded phase, but this comes at the cost of task-specific overfitting.\nApproach Comparison Property IK (ours) Learned Policies Training data None 50 episodes (33 min) Training time 0 2–8 h on T4 GPU Inference rate ~5 Hz (offline) ~10 Hz Generalisation Task-agnostic Task-specific (ACT) or language-conditioned Failure mode Hand occlusion Gripper self-occlusion In-the-Wild Evaluation To assess the generality of the IK retargeting approach beyond the structured lab bench, we deployed the system in two unstructured real-world environments: a grocery store and a pharmacy. The robot and camera recording setup were placed on a standard shopping basket, which provides a repeatable height across trials and positions the robot arm within ~30 cm of shelf objects—a necessary constraint since the human arm (~60 cm reach) is significantly longer than the SO-ARM101 (~30 cm reach).\nIn-the-wild deployment in a grocery store. The robot and camera setup is placed on a shopping basket for repeatable height. Left: the operator reaches for shelf items. Right: the robot mirrors the motion; the PyBullet preview is visible on the laptop screen.\nOver 75 grasp attempts across both locations, only 7 succeeded, yielding a success rate of 9.3%. The primary failure mode is hand occlusion by surrounding objects: in a cluttered shelf environment, the operator’s hand is frequently occluded by adjacent products, shelf edges, and price tags from the egocentric camera’s perspective. This causes MediaPipe to lose track of the thumb and index finger landmarks, preventing both the gripper angle computation and the IK target position calculation. Despite the low overall success rate, the 7 successful grasps demonstrate that the pipeline can transfer to unstructured environments when hand visibility is maintained.\nMosaic of successful in-the-wild grasps (7 out of 75 attempts). Each pair shows the human hand capture (left) and the corresponding robot IK retargeting (right) for various store items across grocery and pharmacy environments. Despite an overall 9.3% success rate, successful transfers demonstrate the pipeline’s potential in unstructured scenes.\nFailure Modes Structured Lab Environment Thumb/index detection failure: At certain hand orientations (particularly toward tiles #6–#9), the thumb and index finger landmarks are poorly detected, preventing gripper angle computation. This is the dominant IK failure mode (accounting for all 10% of lab failures). Gripper self-occlusion (VLAs): The robot’s gripper hides the cube from its own wrist camera during the approach phase. All four VLA policies suffer from this, as the vision model cannot observe the grasp target at the critical moment. Gripper jitter: Rapid open-close oscillations occur when the thumb-index angle is near the binary threshold. The binary gripper mode with a 60° threshold resolves this. Unstructured In-the-Wild Environments Hand occlusion by scene objects: Shelf products, price tags, and adjacent items frequently occlude the operator’s hand from the egocentric camera, causing MediaPipe to lose landmark tracking. This is the dominant failure mode, accounting for the drop from 90% to 9.3% success. Workspace mismatch: The human arm (~60 cm) reaches further than the robot (~30 cm), requiring careful positioning of the shopping basket to keep objects within the robot’s reachable volume. Depth noise: Reflective packaging (foil, plastic wrap) produces unreliable depth readings, causing spurious 3D deprojection results. Conclusion We have presented a vision-based hand-shadowing system for robot teleoperation via egocentric hand tracking and analytical inverse kinematics. The pipeline processes recorded RGB-D frames at ~5 FPS (213 ms per frame) using MediaPipe Hands for landmark detection, depth-based 3D deprojection, and PyBullet for IK solving and trajectory preview, with the LeRobot framework for physical deployment on the SO-ARM101.\nOn a structured pick-and-place benchmark (tiles #1–#5, 50 episodes), the IK retargeting pipeline achieves 90% success with zero training. Among the teleoperation-trained VLA policies, ACT reaches 92%—likely overfitting the simple trajectories—while SmolVLA (50%), \\(\\pi_{0.5}\\) (40%), and GR00T N1.5 (35%) are significantly lower, hampered by gripper self-occlusion during training data collection. In-the-wild evaluation in grocery store and pharmacy environments (7/75 successful grasps, 9.3%) reveals that hand occlusion by surrounding objects is the primary limitation and a clear direction for future improvement.\nFuture Work Occlusion-robust hand tracking: Temporal hand tracking, learned depth completion, or multi-camera setups to maintain landmark visibility in cluttered environments. Dual-arm extension: The current system controls a single arm; extending to simultaneous bimanual control. IK demonstrations for VLA training: Using IK-collected trajectories as training data for VLA policies, potentially avoiding the gripper self-occlusion issue present in leader–follower teleoperation data. Larger workspace: Adaptive camera-to-robot calibration for dynamic operator positioning. Force feedback: Integrating gripper force sensing for haptic feedback to the operator. Credits: This project was conducted at UC Berkeley, Fung Institute for Engineering Leadership. Authored by Hendrik Chiche, Antoine Jamme and Trevor Rigoberto Martinez.\n",
+  "wordCount" : "3737",
+  "inLanguage": "en",
+  "image":"https://chichonnade.github.io/assets/robot_shadowing_human_inrealtime.png","datePublished": "2026-03-03T00:00:00Z",
+  "dateModified": "2026-03-03T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://chichonnade.github.io/posts/vision-based-hand-shadowing/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hendrik's Portfolio",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://chichonnade.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://chichonnade.github.io/" accesskey="h" title="Hendrik&#39;s Portfolio (Alt + H)">Hendrik&#39;s Portfolio</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics
+    </h1>
+    <div class="post-meta"><span title='2026-03-03 00:00:00 +0000 UTC'>March 3, 2026</span>
+
+</div>
+  </header> 
+  <div class="post-content">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<p>Teleoperation of low-cost robotic manipulators remains challenging due to the complexity of mapping human hand articulations to robot joint commands. We present a system that enables robot teleoperation from a single egocentric RGB-D camera mounted on 3D-printed glasses. The pipeline detects 21 hand landmarks per hand using MediaPipe Hands, deprojects them into 3D via depth sensing, transforms them into the robot coordinate frame, and solves a damped-least-squares inverse kinematics problem in PyBullet to produce joint commands for the 6-DOF SO-ARM101 robot. A gripper controller maps thumb&ndash;index finger geometry to grasp aperture with a four-level fallback hierarchy. Actions are first previewed in a physics simulation before deployment on the physical robot through the LeRobot framework. We evaluate the IK retargeting pipeline on a structured pick-and-place benchmark (5-tile grid, 10 grasps per tile) achieving a <strong>90% success rate</strong>, and compare it against four vision-language-action policies (ACT, SmolVLA, \(\pi_{0.5}\), GR00T N1.5) trained on leader&ndash;follower teleoperation data.</p>
+<h4 id="demo-youtubehttpsyoutubemktvg_gywf8-nbspnbsp-code-githubhttpsgithubcomchichonnadevision-based-hand-shadowing-for-robotic-manipulation-via-inverse-kinematics-nbspnbsp-models--data-huggingfacehttpshuggingfacecochichonnade">Demo: <a href="https://youtu.be/mKtVg_gYwf8">YouTube</a>  |  Code: <a href="https://github.com/chichonnade/Vision-Based-Hand-Shadowing-for-Robotic-Manipulation-via-Inverse-Kinematics">GitHub</a>  |  Models &amp; Data: <a href="https://huggingface.co/Chichonnade">HuggingFace</a><a hidden class="anchor" aria-hidden="true" href="#demo-youtubehttpsyoutubemktvg_gywf8-nbspnbsp-code-githubhttpsgithubcomchichonnadevision-based-hand-shadowing-for-robotic-manipulation-via-inverse-kinematics-nbspnbsp-models--data-huggingfacehttpshuggingfacecochichonnade">#</a></h4>
+<h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
+<p>Teaching robots to manipulate objects the way humans do is a central goal of robotics research. Two dominant paradigms have emerged: <em>teleoperation</em>, where a human operator directly controls the robot in real time, and <em>imitation learning</em>, where a policy is trained from recorded demonstrations (<a href="https://arxiv.org/abs/2304.13705">Zhao et al., 2023</a>; <a href="https://arxiv.org/abs/2506.01844">Cadena et al., 2025</a>). Teleoperation provides immediate, interpretable control but traditionally requires expensive hardware such as exoskeletons, leader&ndash;follower arm pairs, or VR headsets (<a href="https://arxiv.org/abs/2310.11604">Cheng et al., 2025</a>; <a href="https://arxiv.org/abs/2407.03162">Ding et al., 2024</a>). Imitation learning can reduce the demonstration burden but demands careful data collection, GPU-based training, and policy evaluation.</p>
+<p>This work studies how an analytical inverse-kinematics pipeline can bridge these paradigms: providing a marker-free teleoperation interface from a first-person RGB-D camera that simultaneously generates training data compatible with imitation-learning frameworks.</p>
+<p>Our contributions are:</p>
+<ol>
+<li>An end-to-end pipeline from egocentric RGB-D video to single-arm robot control via analytical inverse kinematics.</li>
+<li>A sim-to-real transfer workflow using PyBullet for trajectory preview and validation before physical deployment on the SO-ARM101 robot.</li>
+<li>A quantitative comparison of IK retargeting (90% success, zero training) with four VLA policies trained on teleoperation data on a structured pick-and-place benchmark.</li>
+<li>An in-the-wild evaluation in grocery store and pharmacy environments, identifying hand occlusion as the primary failure mode in unstructured scenes.</li>
+</ol>
+<h2 id="related-work">Related Work<a hidden class="anchor" aria-hidden="true" href="#related-work">#</a></h2>
+<h3 id="hand-pose-estimation">Hand Pose Estimation<a hidden class="anchor" aria-hidden="true" href="#hand-pose-estimation">#</a></h3>
+<p>Real-time hand tracking has advanced rapidly. <a href="https://arxiv.org/abs/2006.10214">MediaPipe Hands</a> (Zhang et al., 2020) runs on-device at 30 Hz using a two-stage BlazePalm + landmark pipeline predicting 21 keypoints, and requires no GPU. We adopt MediaPipe for its CPU efficiency and cross-platform availability. <a href="https://arxiv.org/abs/2409.12259">WiLoR</a> (Potamias et al., 2024) improves accuracy with a DarkNet localiser followed by a ViT-based 3D reconstructor, achieving state-of-the-art results on FreiHAND and HO3D benchmarks at over 130 FPS but requires GPU inference. Both systems output 21 keypoints compatible with the <a href="https://doi.org/10.1145/3130800.3130883">MANO hand model</a> topology (Romero et al., 2017).</p>
+<h3 id="teleoperation-systems">Teleoperation Systems<a hidden class="anchor" aria-hidden="true" href="#teleoperation-systems">#</a></h3>
+<p><a href="https://arxiv.org/abs/2310.11604">Open-TeleVision</a> (Cheng et al., 2025) provides stereoscopic VR-based teleoperation for humanoid robots. <a href="https://arxiv.org/abs/2407.03162">Bunny-VisionPro</a> (Ding et al., 2024) uses Apple Vision Pro for bimanual dexterous control with haptic feedback. These systems achieve high fidelity but require specialised VR hardware. Our approach uses only an RGB-D depth camera and 3D-printed accessories.</p>
+<h3 id="imitation-learning">Imitation Learning<a hidden class="anchor" aria-hidden="true" href="#imitation-learning">#</a></h3>
+<p><a href="https://arxiv.org/abs/2304.13705">ACT</a> (Zhao et al., 2023) introduced action chunking with transformers for fine-grained bimanual manipulation, achieving 80&ndash;90% success with 10 minutes of demonstrations. <a href="https://arxiv.org/abs/2506.01844">SmolVLA</a> (Cadena et al., 2025) is a 450M-parameter vision-language-action model trainable on a single GPU. <a href="https://arxiv.org/abs/2410.24164">\(\pi_0\)</a> (Black et al., 2024) is a generalist robot foundation model using flow matching over a VLM backbone, trained across 7 robot embodiments and 68 tasks.</p>
+<h3 id="low-cost-robotics">Low-Cost Robotics<a hidden class="anchor" aria-hidden="true" href="#low-cost-robotics">#</a></h3>
+<p>The <a href="https://github.com/TheRobotStudio/SO-ARM100">SO-ARM100/101</a> is a 6-DOF arm using STS3215 bus servos with 30 kg·cm torque. <a href="https://github.com/huggingface/lerobot">LeRobot</a> provides a hardware-agnostic Python framework that standardises data collection, training, and deployment across robot platforms.</p>
+<h3 id="physics-simulation">Physics Simulation<a hidden class="anchor" aria-hidden="true" href="#physics-simulation">#</a></h3>
+<p><a href="http://pybullet.org">PyBullet</a> (Coumans &amp; Bai, 2016&ndash;2021) provides real-time rigid body dynamics with built-in inverse kinematics via the Bullet Physics SDK. It supports URDF loading, position/velocity/torque control, and GPU-accelerated rendering, making it suitable for rapid prototyping and sim-to-real transfer.</p>
+<h2 id="system-overview">System Overview<a hidden class="anchor" aria-hidden="true" href="#system-overview">#</a></h2>
+<p>The system converts egocentric hand observations into robot commands through a multi-stage transformation pipeline. It requires an <a href="https://ieeexplore.ieee.org/document/8100102">Intel RealSense D400</a> camera mounted on 3D-printed glasses and a single SO-ARM101 follower arm. Each pipeline stage is implemented as a <code>Transformation[InT, OutT]</code> subclass that wraps a <code>_transform</code> method with automatic latency tracking.</p>
+<table>
+<thead>
+<tr>
+<th><strong>#</strong></th>
+<th><strong>Stage</strong></th>
+<th><strong>Input</strong></th>
+<th><strong>Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Camera Input</td>
+<td>None</td>
+<td>CameraFrame</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Hand Detection</td>
+<td>CameraFrame</td>
+<td>ImageSpace</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Depth Deprojection</td>
+<td>(ImageSpace, CameraFrame)</td>
+<td>CameraSpace</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Coord. Transform</td>
+<td>CameraSpace</td>
+<td>RobotSpace</td>
+</tr>
+<tr>
+<td>5</td>
+<td>IK + Gripper</td>
+<td>RobotSpace</td>
+<td>ControlCmds</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Sim / Robot</td>
+<td>ControlCmds</td>
+<td>&mdash;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hardware">Hardware<a hidden class="anchor" aria-hidden="true" href="#hardware">#</a></h3>
+<p>The egocentric sensor platform consists of an Intel RealSense D400-series stereo depth camera mounted on 3D-printed glasses using three PLA/ABS parts (frame, two temple branches, and a camera mount bracket), secured with M1.5, M2, and M3 screws. The camera connects via USB-C 3.1 Gen 1 and streams synchronised RGB and depth at 640×480 resolution and 30 FPS. The robot platform uses a single SO-ARM101 follower arm with 6 revolute joints (5 arm + 1 gripper) driven by STS3215 Feetech bus servos.</p>
+<img src="assets/robot.JPG" alt="Lab bench setup with SO-ARM101 robot and RealSense camera" width="600" style="display: block; margin-left: auto; margin-right: auto;" />
+<p><em>Lab bench setup. The SO-ARM101 robot arm is mounted on a wooden base with the Intel RealSense D400 camera on a stand above, oriented in the same egocentric direction as the glasses-mounted camera.</em></p>
+<h2 id="methods">Methods<a hidden class="anchor" aria-hidden="true" href="#methods">#</a></h2>
+<h3 id="rgb-d-capture-and-camera-model">RGB-D Capture and Camera Model<a hidden class="anchor" aria-hidden="true" href="#rgb-d-capture-and-camera-model">#</a></h3>
+<p>The RealSense camera provides aligned RGB-D frames via the <code>pyrealsense2</code> SDK. We model the camera using the pinhole projection:</p>
+$$ \begin{bmatrix} u \\\\ v \end{bmatrix} = \begin{bmatrix} f\_x & 0 & c\_x \\\\ 0 & f\_y & c\_y \end{bmatrix} \begin{bmatrix} X/Z \\\\ Y/Z \\\\ 1 \end{bmatrix} $$<p>where \((f_x, f_y)\) are focal lengths and \((c_x, c_y)\) is the principal point, all extracted automatically from the camera stream at initialisation.</p>
+<h3 id="hand-pose-estimation-1">Hand Pose Estimation<a hidden class="anchor" aria-hidden="true" href="#hand-pose-estimation-1">#</a></h3>
+<p>We use MediaPipe Hands for 2D hand detection and landmark localisation. MediaPipe&rsquo;s two-stage architecture&mdash;a BlazePalm detector that locates hands via oriented bounding boxes, followed by a lightweight landmark regression network&mdash;predicts 21 keypoints per hand in real time on CPU. The detector outputs left/right hand classification and 2D keypoint coordinates \(\{(u_i, v_i)\}_{i=0}^{20}\) covering the wrist, thumb, index, middle, ring, and pinky finger joints.</p>
+<p>To reduce temporal jitter, we apply exponential moving average (EMA) smoothing to the 2D landmarks:</p>
+$$ \hat{p}\_t = \alpha \, p\_t + (1 - \alpha) \, \hat{p}\_{t-1}, \quad \alpha = 0.8 $$<p>where \(p_t\) is the raw detection and \(\hat{p}_t\) is the smoothed estimate.</p>
+<h3 id="depth-based-3d-reconstruction">Depth-Based 3D Reconstruction<a hidden class="anchor" aria-hidden="true" href="#depth-based-3d-reconstruction">#</a></h3>
+<p>Each 2D landmark \((u_i, v_i)\) is deprojected to 3D camera coordinates using the depth image \(D\) and camera intrinsics:</p>
+$$ \begin{bmatrix} X \\\\ Y \\\\ Z \end{bmatrix} = \frac{D[v\_i, u\_i]}{s} \begin{bmatrix} (u\_i - c\_x) / f\_x \\\\ (v\_i - c\_y) / f\_y \\\\ 1 \end{bmatrix} $$<p>where \(s = 1000\) is the depth scale (millimetres to metres). Depth values are validated against the range \([d_{\min}, d_{\max}] = [0.1, 5.0]\) m; landmarks with out-of-range depth are marked invalid.</p>
+<p>A <em>depth fallback</em> mechanism handles the critical case where one of the two gripper-defining landmarks (THUMB_MCP or INDEX_FINGER_MCP) has invalid depth but the other does not. In this case, the valid landmark&rsquo;s depth is substituted for the failed one, since these adjacent landmarks are typically at similar depths. A hand pose is rejected entirely if fewer than 50% of its 21 landmarks have valid depth.</p>
+<h3 id="camera-to-robot-coordinate-transform">Camera-to-Robot Coordinate Transform<a hidden class="anchor" aria-hidden="true" href="#camera-to-robot-coordinate-transform">#</a></h3>
+<p>Landmarks in camera coordinates \(\mathbf{p}\_{\text{cam}}\) are transformed to the robot base frame \(\mathbf{p}\_{\text{rob}}\) by a rigid-body transformation composed of a camera-to-robot transform and an optional URDF offset:</p>
+$$ \mathbf{p}\_{\text{rob}} = \mathbf{R}\_{\text{final}} \, \mathbf{p}\_{\text{cam}} + \mathbf{t}\_{\text{final}} $$<p>where</p>
+$$ \mathbf{R}\_{\text{final}} = \mathbf{R}\_{\text{urdf}} \cdot \mathbf{R}\_{\text{cam}}, \quad \mathbf{t}\_{\text{final}} = \mathbf{R}\_{\text{urdf}} \cdot \mathbf{t}\_{\text{cam}} + \mathbf{t}\_{\text{urdf}} $$<p>The camera rotation matrix \(\mathbf{R}\_{\text{cam}}\) accounts for the camera mounting angle \(\theta = 50°\):</p>
+$$ \mathbf{R}\_{\text{cam}} = \begin{bmatrix} -1 & 0 & 0 \\\\ 0 & \sin\theta & -\cos\theta \\\\ 0 & -\cos\theta & -\sin\theta \end{bmatrix} $$<p>with translation \(\mathbf{t}\_{\text{cam}} = (0.04, -0.049, 0.48)^\top\) metres. These parameters are extracted directly from the SolidWorks CAD assembly that models both the robot and the camera mount bracket at their exact physical positions. The x-axis negation mirrors the image horizontally (the camera observes hands from a first-person perspective, while the robot faces the operator), and the rotation about the x-axis maps the downward camera view to the robot&rsquo;s forward&ndash;up coordinate system.</p>
+<h3 id="target-pose-computation">Target Pose Computation<a hidden class="anchor" aria-hidden="true" href="#target-pose-computation">#</a></h3>
+<p>The robot end-effector target position is the midpoint of the two gripper-defining hand landmarks:</p>
+$$ \mathbf{p}\_{\text{target}} = \frac{1}{2} \bigl(\mathbf{p}\_{\text{THUMB\\_MCP}} + \mathbf{p}\_{\text{INDEX\\_MCP}}\bigr) $$<p>The target orientation is constructed as a rotation matrix from three orthogonal axes derived from hand geometry:</p>
+$$ \mathbf{e}\_1 = \frac{\mathbf{p}\_{\text{INDEX\\_MCP}} - \mathbf{p}\_{\text{THUMB\\_MCP}}} {\|\mathbf{p}\_{\text{INDEX\\_MCP}} - \mathbf{p}\_{\text{THUMB\\_MCP}}\|} $$$$ \mathbf{d} = \frac{1}{2}\bigl( (\mathbf{p}\_{\text{THUMB\\_TIP}} - \mathbf{p}\_{\text{THUMB\\_MCP}}) + (\mathbf{p}\_{\text{INDEX\\_TIP}} - \mathbf{p}\_{\text{INDEX\\_MCP}}) \bigr) $$$$ \mathbf{e}\_3 = \frac{\mathbf{e}\_1 \times \hat{\mathbf{d}}} {\|\mathbf{e}\_1 \times \hat{\mathbf{d}}\|}, \quad \mathbf{e}\_2 = \mathbf{e}\_3 \times \mathbf{e}\_1 $$<p>The resulting rotation matrix \(\mathbf{R} = [\mathbf{e}_1 \;\; \mathbf{e}_2 \;\; \mathbf{e}_3]\) is converted to a quaternion via <code>scipy.spatial.transform</code> for the IK solver.</p>
+<p>When fingertip landmarks are unavailable (due to occlusion or depth failure), a <em>fallback orientation</em> is computed using only THUMB_MCP, INDEX_FINGER_MCP, and WRIST, replacing the average finger direction \(\mathbf{d}\) with the wrist-to-gripper vector.</p>
+<h3 id="inverse-kinematics">Inverse Kinematics<a hidden class="anchor" aria-hidden="true" href="#inverse-kinematics">#</a></h3>
+<p>Given the target position \(\mathbf{p}\_{\text{target}}\) and orientation quaternion \(\mathbf{q}\_{\text{target}}\), we solve for joint angles \(\boldsymbol{\theta} = (\theta_1, \ldots, \theta_5)\) of the 5-DOF arm using PyBullet&rsquo;s <code>calculateInverseKinematics</code>:</p>
+$$ \boldsymbol{\theta}^* = \arg\min\_{\boldsymbol{\theta}} \bigl\| \text{FK}(\boldsymbol{\theta}) - (\mathbf{p}\_{\text{target}}, \mathbf{q}\_{\text{target}}) \bigr\|^2 + \lambda \|\boldsymbol{\theta} - \boldsymbol{\theta}\_{\text{rest}}\|^2 $$<p>where \(\text{FK}(\cdot)\) is the forward kinematics function, \(\boldsymbol{\theta}\_{\text{rest}}\) is the current joint state (used as the rest pose), and \(\lambda\) captures per-joint damping extracted from the URDF (clamped to \(\geq 0.001\) to prevent solver instability). The solver runs up to 100 iterations with a residual threshold of \(10^{-4}\).</p>
+<p>EMA smoothing (\(\alpha = 0.5\)) is applied to the IK solution to suppress temporal jitter:</p>
+$$ \hat{\boldsymbol{\theta}}\_t = 0.5 \, \boldsymbol{\theta}^*\_t + 0.5 \, \hat{\boldsymbol{\theta}}\_{t-1} $$<p>A safety check rejects any target with \(z < 0.05\) m to prevent ground-plane collisions.</p>
+<h3 id="gripper-control">Gripper Control<a hidden class="anchor" aria-hidden="true" href="#gripper-control">#</a></h3>
+<p>The gripper angle \(\phi\) is computed from the angular separation between vectors from the gripper base (target position) to the thumb and index finger:</p>
+$$ \phi = \arccos\!\left( \frac{(\mathbf{p}\_{\text{thumb}} - \mathbf{p}\_{\text{target}}) \cdot (\mathbf{p}\_{\text{index}} - \mathbf{p}\_{\text{target}})} {\|\mathbf{p}\_{\text{thumb}} - \mathbf{p}\_{\text{target}}\| \; \|\mathbf{p}\_{\text{index}} - \mathbf{p}\_{\text{target}}\|} \right) $$<p>clamped to the acute range \([0, \pi/2]\) and then to the gripper joint limits \([\phi_{\min}, \phi_{\max}] = [0.087, 1.658]\) rad after applying an offset of \(-0.175\) rad for tighter grip calibration.</p>
+<p>A four-level fallback hierarchy ensures robust gripper control:</p>
+<ol>
+<li>Use THUMB_TIP and INDEX_FINGER_TIP (primary).</li>
+<li>Use THUMB_IP and INDEX_FINGER_DIP (knuckle fallback).</li>
+<li>Use the last valid gripper angle (temporal persistence).</li>
+<li>Use the mid-open default \((\phi_{\min}+\phi_{\max})/2\).</li>
+</ol>
+<h3 id="simulation-preview">Simulation Preview<a hidden class="anchor" aria-hidden="true" href="#simulation-preview">#</a></h3>
+<p>Before deploying on the physical robot, all IK-generated trajectories are previewed in a PyBullet simulation environment. The simulation loads the SO-ARM101 URDF with 7 joints per arm (1 fixed base + 5 revolute arm + 1 revolute gripper); only the right arm is used in our experiments. The simulation runs at 240 Hz with gravity \(g = 9.81\) m/s². Joint commands are executed via position control with uniform force limits of 6.0 N, position gains of 0.2, and velocity gains of 1.0.</p>
+<img src="assets/simulation.JPG" alt="PyBullet simulation preview with RGB, depth, and robot panels" width="600" style="display: block; margin-left: auto; margin-right: auto;" />
+<p><em>PyBullet simulation preview. Top-left: RGB frame from the egocentric camera showing the operator&rsquo;s hand. Top-right: depth colour map. Bottom: robot arm in PyBullet with debug joint labels and IK target markers (green/red spheres), tracking the hand-derived trajectory.</em></p>
+<p>This three-panel view allows the operator to verify that the computed joint trajectories faithfully reproduce the intended hand motion before committing to physical execution. Beyond trajectory verification, the simulation also exports demonstration data (<code>.npy</code> action files) that can be used to train imitation-learning policies.</p>
+<h3 id="physical-deployment">Physical Deployment<a hidden class="anchor" aria-hidden="true" href="#physical-deployment">#</a></h3>
+<p>Validated actions are deployed on the physical SO-ARM101 via the LeRobot framework. Joint angles from the IK solver (in radians) are normalised to \([0, 1]\) using the joint range limits and converted to motor commands:</p>
+$$ a\_{\text{motor}} = \begin{cases} (a\_{\text{norm}} - 0.5) \times 200 & \text{arm joints} \\\\ a\_{\text{norm}} \times 100 & \text{gripper joint} \end{cases} $$<p>Servo PID coefficients are configured for smooth motion, and acceleration/velocity limits prevent abrupt movements. Three gripper modes are supported: <em>Normal</em> (raw angle pass-through), <em>Binary</em> (threshold at 60°; outputs fully open or closed), and <em>Offset</em> (adds a configurable offset for tighter grasps).</p>
+<img src="assets/robot_shadowing_human_inrealtime.png" alt="Hand shadowing: operator grasps object while robot mirrors the pose" width="700" style="display: block; margin-left: auto; margin-right: auto;" />
+<p><em>Hand shadowing. Left: the operator wearing the RealSense glasses performs a grasp. Right: the SO-ARM101 robot mirrors the hand pose through the IK pipeline.</em></p>
+<h2 id="experimental-setup">Experimental Setup<a hidden class="anchor" aria-hidden="true" href="#experimental-setup">#</a></h2>
+<h3 id="hardware-and-software">Hardware and Software<a hidden class="anchor" aria-hidden="true" href="#hardware-and-software">#</a></h3>
+<ul>
+<li><strong>Camera</strong>: Intel RealSense D400, 640×480 RGB+D at 30 FPS</li>
+<li><strong>Robot</strong>: Single SO-ARM101 follower arm (STS3215 servos, 30 kg·cm torque)</li>
+<li><strong>Glasses</strong>: Custom 3D-printed PLA mount (3 parts: frame, 2× branch, mount bracket)</li>
+<li><strong>Compute</strong>: Apple M-series or x86 laptop (MediaPipe runs on CPU; PyBullet IK requires no GPU)</li>
+<li><strong>Software</strong>: Python 3.10, PyBullet ≥3.2.5, MediaPipe ≥0.10, LeRobot ≥0.4.1, OpenCV ≥4.8</li>
+</ul>
+<h4 id="so-arm101-joint-angle-ranges-radians">SO-ARM101 Joint Angle Ranges (Radians)<a hidden class="anchor" aria-hidden="true" href="#so-arm101-joint-angle-ranges-radians">#</a></h4>
+<table>
+<thead>
+<tr>
+<th><strong>Joint</strong></th>
+<th><strong>Min</strong></th>
+<th><strong>Max</strong></th>
+<th><strong>Range (°)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shoulder pan</td>
+<td>−1.920</td>
+<td>+1.920</td>
+<td>220.0</td>
+</tr>
+<tr>
+<td>Shoulder lift</td>
+<td>−1.745</td>
+<td>+1.745</td>
+<td>200.0</td>
+</tr>
+<tr>
+<td>Elbow flex</td>
+<td>−1.745</td>
+<td>+1.571</td>
+<td>190.0</td>
+</tr>
+<tr>
+<td>Wrist flex</td>
+<td>−1.658</td>
+<td>+1.658</td>
+<td>190.0</td>
+</tr>
+<tr>
+<td>Wrist roll</td>
+<td>−2.793</td>
+<td>+2.793</td>
+<td>320.0</td>
+</tr>
+<tr>
+<td>Gripper</td>
+<td>−0.175</td>
+<td>+1.745</td>
+<td>110.0</td>
+</tr>
+</tbody>
+</table>
+<h4 id="physical-robot-servo-parameters">Physical Robot Servo Parameters<a hidden class="anchor" aria-hidden="true" href="#physical-robot-servo-parameters">#</a></h4>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P coefficient</td>
+<td>12</td>
+</tr>
+<tr>
+<td>I coefficient</td>
+<td>0</td>
+</tr>
+<tr>
+<td>D coefficient</td>
+<td>24</td>
+</tr>
+<tr>
+<td>Arm acceleration limit</td>
+<td>50 / 254</td>
+</tr>
+<tr>
+<td>Gripper acceleration limit</td>
+<td>100 / 254</td>
+</tr>
+<tr>
+<td>Arm velocity limit</td>
+<td>1500 RPM</td>
+</tr>
+<tr>
+<td>Gripper velocity limit</td>
+<td>3000 RPM</td>
+</tr>
+</tbody>
+</table>
+<h3 id="task-and-protocol">Task and Protocol<a hidden class="anchor" aria-hidden="true" href="#task-and-protocol">#</a></h3>
+<p>The benchmark task is: <em>&ldquo;Grab the purple cube and drop it in the box.&rdquo;</em> The cube is a soft foam block (5×5×5 cm) placed on a 3×3 tile grid (tiles #1&ndash;#9), with a 25×25 cm cardboard box positioned to the left of the grid.</p>
+<img src="assets/robot_grabbing_cube.JPG" alt="Pick-and-place benchmark with SO-ARM101 robot" width="600" style="display: block; margin-left: auto; margin-right: auto;" />
+<p><em>Pick-and-place benchmark task. The SO-ARM101 robot grasps the purple cube and places it in the box. The tile grid (#1&ndash;#9) is marked with orange tape; the box sits to the left. The RealSense camera is visible on the stand above.</em></p>
+<p>For the IK pipeline, the operator wears the glasses and performs the task naturally. The system records 30 FPS RGB-D to a <code>.bag</code> file, processes it offline to extract joint-angle actions, previews the trajectory in PyBullet, and then deploys on the physical robot.</p>
+<p>We initially planned 5 grasps per tile across all 9 tiles (5×9 = 45 episodes). However, preliminary trials revealed two distinct failure patterns:</p>
+<ul>
+<li><strong>IK pipeline</strong>: tiles #6&ndash;#9 (closer to the robot base) require the operator to reach downward and behind, changing the hand orientation relative to the egocentric camera such that the thumb and index finger become partially self-occluded, preventing reliable gripper-angle computation.</li>
+<li><strong>VLA policies</strong>: the robot&rsquo;s own gripper occluded the cube from its wrist-mounted camera at certain grid positions.</li>
+</ul>
+<p>We therefore restricted the experiment to tiles #1&ndash;#5 with 10 grasps per tile, yielding 10×5 = 50 episodes per approach.</p>
+<h3 id="vla-policy-training">VLA Policy Training<a hidden class="anchor" aria-hidden="true" href="#vla-policy-training">#</a></h3>
+<p>For the imitation-learning comparison, 50 demonstration episodes (×40 s each, tiles #1&ndash;#5) are collected via leader&ndash;follower teleoperation using a second SO-ARM101 as the leader arm (standard LeRobot teleoperation setup) with the same RealSense camera recording RGB and depth at 640×480, 30 FPS. The demonstration data includes synchronised RGB, depth, and joint-angle recordings, uploaded to the Hugging Face Hub in LeRobot dataset format.</p>
+<p>Four policies are fine-tuned on Google Colab (T4 GPU, 16 GB):</p>
+<ul>
+<li><strong>ACT</strong> (<a href="https://arxiv.org/abs/2304.13705">Zhao et al., 2023</a>): batch size 4&ndash;6, 50k steps. Learns a generative model over action chunks conditioned on image and proprioceptive observations.</li>
+<li><strong>SmolVLA</strong> (<a href="https://arxiv.org/abs/2506.01844">Cadena et al., 2025</a>): batch size 64, 20k steps. A 450M-parameter vision-language-action model.</li>
+<li><strong>\(\pi_{0.5}\)</strong> (<a href="https://arxiv.org/abs/2410.24164">Black et al., 2024</a>): batch size 32, 3k steps, bfloat16. Fine-tuned from a pretrained VLM backbone.</li>
+<li><strong>GR00T N1.5</strong>: batch size 32, 3k steps. A cross-embodiment foundation model.</li>
+</ul>
+<h2 id="results-and-discussion">Results and Discussion<a hidden class="anchor" aria-hidden="true" href="#results-and-discussion">#</a></h2>
+<h3 id="pipeline-latency">Pipeline Latency<a hidden class="anchor" aria-hidden="true" href="#pipeline-latency">#</a></h3>
+<p>The three dominant stages are MediaPipe hand detection (23 ms), RGB/depth frame overlay and visualisation (110 ms), and PyBullet inverse kinematics solving (80 ms). The total per-frame processing time is 23 + 110 + 80 = 213 ms, yielding an effective throughput of ~5 FPS. The pipeline therefore does <em>not</em> operate in real time at the camera&rsquo;s native 30 FPS: frames are recorded to a <code>.bag</code> file at 30 FPS, then processed offline at ~5 FPS to produce joint-angle trajectories, which are subsequently replayed on the robot at the target frame rate.</p>
+<img src="assets/chart_latency.png" alt="Per-stage latency breakdown chart" width="600" style="display: block; margin-left: auto; margin-right: auto;" />
+<p><em>Per-stage latency breakdown. The RGB/depth frame overlay (110 ms) and PyBullet IK solver (80 ms) dominate, yielding a total of 213 ms per frame (~5 FPS). Processing is performed offline on recorded <code>.bag</code> files.</em></p>
+<h3 id="pick-and-place-success-rates">Pick-and-Place Success Rates<a hidden class="anchor" aria-hidden="true" href="#pick-and-place-success-rates">#</a></h3>
+<p>The IK retargeting pipeline achieves a <strong>90%</strong> success rate (45/50) with zero training, since it analytically maps every operator hand motion to the robot. Its failures stem exclusively from thumb/index landmark detection issues at certain hand orientations, which prevent the gripper angle from being computed (the four-level fallback hierarchy recovers in most but not all cases).</p>
+<table>
+<thead>
+<tr>
+<th><strong>Approach</strong></th>
+<th><strong>Training Steps</strong></th>
+<th><strong>Inference Hz</strong></th>
+<th><strong>Success Rate</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IK Retargeting (ours)</td>
+<td>&mdash;</td>
+<td>~5 (offline)</td>
+<td>90%</td>
+</tr>
+<tr>
+<td>ACT</td>
+<td>50k</td>
+<td>~10</td>
+<td><strong>92%</strong></td>
+</tr>
+<tr>
+<td>SmolVLA</td>
+<td>20k</td>
+<td>~10</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>\(\pi_{0.5}\)</td>
+<td>3k</td>
+<td>~10</td>
+<td>40%</td>
+</tr>
+<tr>
+<td>GR00T N1.5</td>
+<td>3k</td>
+<td>~10</td>
+<td>35%</td>
+</tr>
+</tbody>
+</table>
+<img src="assets/chart_pertile.png" alt="IK retargeting per-tile success rates" width="600" style="display: block; margin-left: auto; margin-right: auto;" />
+<p><em>IK retargeting per-tile success (out of 10 grasps each). Tiles #1&ndash;#2 (farthest from robot, natural hand pose) achieve perfect scores. Performance degrades toward tile #5 (closest to robot base) where the operator&rsquo;s hand orientation causes partial thumb/index self-occlusion from the egocentric camera. Total: 45/50 = 90%.</em></p>
+<p>The four VLA policies are trained on 50 leader&ndash;follower teleoperation episodes and evaluated on the same tile set. ACT achieves a <strong>92%</strong> success rate&mdash;slightly exceeding the IK pipeline. This is expected: teleoperated demonstrations are recorded directly from physically successful grasps (the leader arm moves the follower through the correct trajectory), so the training data contains no perception failures. In contrast, the IK pipeline must reconstruct the trajectory from vision at every frame and can fail whenever hand landmarks are poorly detected. ACT benefits from 50k training steps on these clean demonstrations, effectively memorising the structured task.</p>
+<p>SmolVLA reaches 50%, competitive given its language-conditioning capability but limited by the small number of training episodes. \(\pi_{0.5}\) achieves 40%, limited by its short fine-tuning (3k steps) from the generalist pretrained checkpoint. GR00T N1.5 reaches 35%, consistent with the challenge of adapting a cross-embodiment foundation model to a specific low-cost arm.</p>
+<p>A shared failure mode across SmolVLA, \(\pi_{0.5}\), and GR00T N1.5 is <em>self-occlusion</em>: the robot&rsquo;s gripper hides the cube from its own wrist-mounted camera during the approach phase, effectively preventing the vision model from learning a reliable grasp prior. ACT&rsquo;s action-chunking approach partially sidesteps this by committing to multi-step action sequences that carry through the occluded phase, but this comes at the cost of task-specific overfitting.</p>
+<h3 id="approach-comparison">Approach Comparison<a hidden class="anchor" aria-hidden="true" href="#approach-comparison">#</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>IK (ours)</strong></th>
+<th><strong>Learned Policies</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training data</td>
+<td>None</td>
+<td>50 episodes (33 min)</td>
+</tr>
+<tr>
+<td>Training time</td>
+<td>0</td>
+<td>2&ndash;8 h on T4 GPU</td>
+</tr>
+<tr>
+<td>Inference rate</td>
+<td>~5 Hz (offline)</td>
+<td>~10 Hz</td>
+</tr>
+<tr>
+<td>Generalisation</td>
+<td>Task-agnostic</td>
+<td>Task-specific (ACT) or language-conditioned</td>
+</tr>
+<tr>
+<td>Failure mode</td>
+<td>Hand occlusion</td>
+<td>Gripper self-occlusion</td>
+</tr>
+</tbody>
+</table>
+<h3 id="in-the-wild-evaluation">In-the-Wild Evaluation<a hidden class="anchor" aria-hidden="true" href="#in-the-wild-evaluation">#</a></h3>
+<p>To assess the generality of the IK retargeting approach beyond the structured lab bench, we deployed the system in two unstructured real-world environments: a grocery store and a pharmacy. The robot and camera recording setup were placed on a standard shopping basket, which provides a repeatable height across trials and positions the robot arm within ~30 cm of shelf objects&mdash;a necessary constraint since the human arm (~60 cm reach) is significantly longer than the SO-ARM101 (~30 cm reach).</p>
+<div style="display: flex; gap: 2%; justify-content: center;">
+  <img src="assets/inthewild_humanhandhandcapture.JPG" alt="In-the-wild: operator reaching for shelf items" style="width: 48%;" />
+  <img src="assets/inthewild_robotIK.JPG" alt="In-the-wild: robot mirrors motion via IK" style="width: 48%;" />
+</div>
+<p><em>In-the-wild deployment in a grocery store. The robot and camera setup is placed on a shopping basket for repeatable height. Left: the operator reaches for shelf items. Right: the robot mirrors the motion; the PyBullet preview is visible on the laptop screen.</em></p>
+<p>Over 75 grasp attempts across both locations, only 7 succeeded, yielding a success rate of <strong>9.3%</strong>. The primary failure mode is <em>hand occlusion by surrounding objects</em>: in a cluttered shelf environment, the operator&rsquo;s hand is frequently occluded by adjacent products, shelf edges, and price tags from the egocentric camera&rsquo;s perspective. This causes MediaPipe to lose track of the thumb and index finger landmarks, preventing both the gripper angle computation and the IK target position calculation. Despite the low overall success rate, the 7 successful grasps demonstrate that the pipeline <em>can</em> transfer to unstructured environments when hand visibility is maintained.</p>
+<img src="assets/mosaic_in_the_wild.png" alt="Mosaic of successful in-the-wild grasps" width="700" style="display: block; margin-left: auto; margin-right: auto;" />
+<p><em>Mosaic of successful in-the-wild grasps (7 out of 75 attempts). Each pair shows the human hand capture (left) and the corresponding robot IK retargeting (right) for various store items across grocery and pharmacy environments. Despite an overall 9.3% success rate, successful transfers demonstrate the pipeline&rsquo;s potential in unstructured scenes.</em></p>
+<h3 id="failure-modes">Failure Modes<a hidden class="anchor" aria-hidden="true" href="#failure-modes">#</a></h3>
+<h4 id="structured-lab-environment">Structured Lab Environment<a hidden class="anchor" aria-hidden="true" href="#structured-lab-environment">#</a></h4>
+<ol>
+<li><strong>Thumb/index detection failure</strong>: At certain hand orientations (particularly toward tiles #6&ndash;#9), the thumb and index finger landmarks are poorly detected, preventing gripper angle computation. This is the dominant IK failure mode (accounting for all 10% of lab failures).</li>
+<li><strong>Gripper self-occlusion (VLAs)</strong>: The robot&rsquo;s gripper hides the cube from its own wrist camera during the approach phase. All four VLA policies suffer from this, as the vision model cannot observe the grasp target at the critical moment.</li>
+<li><strong>Gripper jitter</strong>: Rapid open-close oscillations occur when the thumb-index angle is near the binary threshold. The binary gripper mode with a 60° threshold resolves this.</li>
+</ol>
+<h4 id="unstructured-in-the-wild-environments">Unstructured In-the-Wild Environments<a hidden class="anchor" aria-hidden="true" href="#unstructured-in-the-wild-environments">#</a></h4>
+<ol>
+<li><strong>Hand occlusion by scene objects</strong>: Shelf products, price tags, and adjacent items frequently occlude the operator&rsquo;s hand from the egocentric camera, causing MediaPipe to lose landmark tracking. This is the dominant failure mode, accounting for the drop from 90% to 9.3% success.</li>
+<li><strong>Workspace mismatch</strong>: The human arm (~60 cm) reaches further than the robot (~30 cm), requiring careful positioning of the shopping basket to keep objects within the robot&rsquo;s reachable volume.</li>
+<li><strong>Depth noise</strong>: Reflective packaging (foil, plastic wrap) produces unreliable depth readings, causing spurious 3D deprojection results.</li>
+</ol>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>We have presented a vision-based hand-shadowing system for robot teleoperation via egocentric hand tracking and analytical inverse kinematics. The pipeline processes recorded RGB-D frames at ~5 FPS (213 ms per frame) using MediaPipe Hands for landmark detection, depth-based 3D deprojection, and PyBullet for IK solving and trajectory preview, with the LeRobot framework for physical deployment on the SO-ARM101.</p>
+<p>On a structured pick-and-place benchmark (tiles #1&ndash;#5, 50 episodes), the IK retargeting pipeline achieves 90% success with zero training. Among the teleoperation-trained VLA policies, ACT reaches 92%&mdash;likely overfitting the simple trajectories&mdash;while SmolVLA (50%), \(\pi_{0.5}\) (40%), and GR00T N1.5 (35%) are significantly lower, hampered by gripper self-occlusion during training data collection. In-the-wild evaluation in grocery store and pharmacy environments (7/75 successful grasps, 9.3%) reveals that hand occlusion by surrounding objects is the primary limitation and a clear direction for future improvement.</p>
+<h3 id="future-work">Future Work<a hidden class="anchor" aria-hidden="true" href="#future-work">#</a></h3>
+<ul>
+<li><strong>Occlusion-robust hand tracking</strong>: Temporal hand tracking, learned depth completion, or multi-camera setups to maintain landmark visibility in cluttered environments.</li>
+<li><strong>Dual-arm extension</strong>: The current system controls a single arm; extending to simultaneous bimanual control.</li>
+<li><strong>IK demonstrations for VLA training</strong>: Using IK-collected trajectories as training data for VLA policies, potentially avoiding the gripper self-occlusion issue present in leader&ndash;follower teleoperation data.</li>
+<li><strong>Larger workspace</strong>: Adaptive camera-to-robot calibration for dynamic operator positioning.</li>
+<li><strong>Force feedback</strong>: Integrating gripper force sensing for haptic feedback to the operator.</li>
+</ul>
+<p><br><br>
+<span style="color: grey;"> Credits:</span> <br>
+<span style="color: grey;">This project was conducted at UC Berkeley, Fung Institute for Engineering Leadership. Authored by Hendrik Chiche, Antoine Jamme and Trevor Rigoberto Martinez.</span></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://chichonnade.github.io/">Hendrik&#39;s Portfolio</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
